@@ -1,0 +1,7 @@
+Instruments:
+Tesla coil:
+https://create.arduino.cc/projecthub/bgmichelsen/arduino-musical-tesla-coil-e97875?ref=tag&ref_id=music&offset=44
+
+Decoration:
+Infinity mirror:
+https://create.arduino.cc/projecthub/TheTNR/infinity-mirror-vu-meter-music-equalizer-ed6fe2?ref=tag&ref_id=music&offset=45

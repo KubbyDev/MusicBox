@@ -1,0 +1,6 @@
+Idees:
+Le tambour peut faire de la lumiere quand on tappe dessus
+
+Links:
+https://create.arduino.cc/projecthub/FrancoMolina/drumcube-an-arduino-robot-drummer-04255a?ref=tag&ref_id=music&offset=17
+https://www.youtube.com/watch?v=pOi2FUBZz5A

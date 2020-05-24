@@ -1,3 +1,6 @@
+// This is my first attempt at controlling a stepper motor
+// The motor I used is the 28BYJ-48
+
 #include <Stepper.h>
 
 #define STEPS_PER_REV 32

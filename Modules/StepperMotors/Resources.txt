@@ -1,0 +1,6 @@
+Idee:
+Faire une sorte de violon avec un bras qui bouge grace au stepper. Le son est produit par le moteur, pas par le violon, mais le violon donne un visuel sympa.
+Meme idée mais avec un accordéon (plus proche du son des steppers + possibilité d'en mettre un de chaque coté)
+
+Links:
+https://forum.phpoc.com/blogs/iot-lover/1331-arduino-making-music-using-step-motor

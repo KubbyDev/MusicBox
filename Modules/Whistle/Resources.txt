@@ -1,0 +1,5 @@
+Complete project:
+https://create.arduino.cc/projecthub/gurpr337/self-playing-slide-whistle-be272b?ref=tag&ref_id=music&offset=173
+
+Air blower:
+https://www.youtube.com/watch?v=03bonodXVHM
