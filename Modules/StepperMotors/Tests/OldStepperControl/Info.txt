@@ -1,0 +1,28 @@
+Couldn't find any information about this old stepper motor I found in my fathers garage
+I had to figure it out by myself:
+
+Wires:
+Brown, Black, Yellow, Orange, Red, Red2
+
+Information written on the motor:
+Volt: 12
+Phase: 4
+Ohm/Coil: 25
+Deg/Step: 7.5
+Sankyo HH7-1166
+MSAE048C56
+
+Resistances (Omh):
+Brown - Black: 50
+Yellow - Orange: 50
+Red - Brown: 25
+Red - Black: 25
+Red2 - Yellow: 25
+Red2 - Orange: 25
+
+Interpretations:
+2 coils:
+
+Br    Bl  O     Y
+|  R  |   |  R2 |
+\-/¨\-/   \-/¨\-/

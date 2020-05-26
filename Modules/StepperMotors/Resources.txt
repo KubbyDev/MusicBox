@@ -4,3 +4,7 @@ Meme idée mais avec un accordéon (plus proche du son des steppers + possibilit
 
 Links:
 https://forum.phpoc.com/blogs/iot-lover/1331-arduino-making-music-using-step-motor
+https://www.instructables.com/id/Make-Music-With-Stepper-Motors/
+
+
+Apparament la colle chaude permet un excellent transfert des vibrations du moteur vers le support
