@@ -1,0 +1,14 @@
+In order to produce a good sound I made some measurements on a real flute:
+
+----------| exit hole   /------------
+----------|            /
+blow hole             /
+----------|          /---------------
+
+blow hole height: 1.5 mm
+blow hole width: 10.3 mm
+blow hole length: 42 mm
+exit hole bottom length: 4.4 mm
+exit hole top length: 14.3 mm
+exit hole width: 10.3 mm
+exit hole height: 4.5 mm

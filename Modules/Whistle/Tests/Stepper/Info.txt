@@ -1,0 +1,35 @@
+Initially I wanted to use the 28BYJ-48 but I broke it.
+So I dissassembled and repaired it, but lost one of the gears in the process
+So I just used a JM-24BYJ found in a camera
+
+Resistances (Omh):
+Brown - Red: 21
+Brown - Blue: 42
+Brown - Black: 42
+Brown - Yellow: 42
+Blue - Black: 42
+Blue - Yellow: 42
+Blue - Red: 21
+Red - Yellow: 21
+Red - Black: 21
+Yellow - Black: 42
+
+Interpretation:
+
+          Blue
+           |
+           ||
+           |
+Brown -=- Red -=- Black
+           |
+           ||
+           |
+         Yellow
+
+The order of the wires on the motor is Black Yellow Red Blue Brown. So probably:
+Br   Blu Bla    Y
+|  R  |   |  R  |
+\-/¨\-/   \-/¨\-/
+
+
+But I didn't manage to make it work :/
