@@ -33,3 +33,7 @@ Br   Blu Bla    Y
 
 
 But I didn't manage to make it work :/
+
+So I went back to the 28BYJ-48
+I noticed the central shaft holding the rotor was bent, so I put it in place and decided to test it without the gear reduction.
+But the motor was getting stuck any ways and didn't have enough power to properly push the piston

@@ -1,0 +1,16 @@
+Lots of problems
+
+I had to cut/file some pieces, especially the gears supports (I forgot to add a way to put them in :/)
+The measurements on the real flute were good because the printed part sounds exactly like the real one
+But the piston mechanism (not the gears, just the piston) is awful. There is only one spot where the sound is pretty stable and really changes as the piston moves.
+But the range of this spot is from F6 to G6 :/
+
+Causes: I think there are 4 problems:
+I filed the separation between the tubes so the piston doesn't get stuck. But maybe this changes the sound. I should print the entire tube at once
+The piston probably lets air go past it. I should find a way to get better isolation without getting too much friction
+It seems that the whislte should be as free to move as possible to produce a good sound. So I should use some sort of pillars instead of gluing it to the support.
+I think the air blower isn't powerful enough because the sound is clearer when I blow in it instead of using the air blower.
+
+Next steps
+test the blockig mechanism and maybe break one on the borders of the hole (to make blocking easier) to see if it changes the sound
+test the gears mechanism to hopefully learn something from it, then restart from scratch
