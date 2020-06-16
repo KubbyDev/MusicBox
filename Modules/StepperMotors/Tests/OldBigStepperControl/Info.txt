@@ -1,0 +1,25 @@
+Couldn't find any information about this old stepper motor I found in my fathers garage
+I had to figure it out by myself:
+
+Wires:
+White (WH), Black (BK), Red (RD), Red White (RW), Blue White (BW), Blue (BL)
+
+Information written on the motor:
+TYPE 103G775-2142
+DC 5.6V
+0.6A
+1.8 DEG/STEP
+
+Resistances (Ohm):
+WH - BW: 10
+WH - BL: 10
+BW - BL: 20
+BK - RW: 10
+BK - RD: 10
+RW - RD: 20
+
+Interpretation:
+
+BW    BL  RW    RD
+|  WH |   |  BK |
+\-/¨\-/   \-/¨\-/
