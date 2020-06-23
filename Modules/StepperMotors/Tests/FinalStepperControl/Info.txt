@@ -1,0 +1,11 @@
+I have this motor: Quimat 17hd48002h-22b
+https://www.amazon.co.uk/Quimat-Stepper-Bipolar-Connector-Mounting/dp/B06XQWMDWT/ref=sr_1_3?ie=UTF8&qid=1503954606&sr=8-3&keywords=nema%2B17%2Bquimat&th=1
+
+And this driver: Longruner A4988
+https://www.amazon.fr/gp/product/B071P41ZBW/ref=ox_sc_act_title_1?smid=A1QYNW8GSP8HVC&psc=1
+
+With 5V the speed the motor can reach is not great. I had a 12V 500mA power supply so I tried it with much better results
+I think the max speed can be further improved using a power supply that can provide 1A (the motor is rated for 1.7A)
+
+Resources:
+https://howtomechatronics.com/tutorials/arduino/how-to-control-stepper-motor-with-a4988-driver-and-arduino/
