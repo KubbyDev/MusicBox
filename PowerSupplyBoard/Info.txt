@@ -1,0 +1,52 @@
+General info: 
+https://electronics.stackexchange.com/questions/34745/choosing-power-supply-how-to-get-the-voltage-and-current-ratings
+Stepper motors: 
+https://www.pololu.com/product/1182
+http://blog.inventables.com/p/stepper-motors.html
+
+Stepper motors: ---------------------------------------------------------------
+
+Refs:
+Quimat 17hd48002h-22b: https://www.amazon.fr/gp/product/B06XQWMDWT/ref=ox_sc_act_title_6?smid=A1WTMON4PWYMJU&psc=1
+Longruner A4988: https://www.amazon.fr/gp/product/B071P41ZBW/ref=ox_sc_act_title_1?smid=A1QYNW8GSP8HVC&psc=1
+
+Motor driver:
+Voltage for motor: 8V to 35V *
+Current for motor: 1.5A **
+Voltage for logic: 3.3V or 5V 
+
+(*):
+There can be voltage spikes higher than 35V, even with a 12V power supply 
+These spikes can damage the board. To reduce that risk, connect vmot and gnd with
+a 47µF or more capacitor
+
+(**) IMPORTANT: 
+Tweak the potentiometer to set the max current 
+(read current limiting section: https://www.pololu.com/product/1182)
+The perfect value should then be 1.5A (a bit below rated current of the motor)
+Checking on the temperature might still be a good idea
+Can handle 2A with heatsink (1A without) and per coil. Total if 2 coils active
+at the same time = 4A (Never happens in full step mode)
+
+Driver thermal protection: YES
+
+Big Servos --------------------------------------------------------------------
+
+Refs: 
+Morza MG996R: https://www.amazon.fr/gp/product/B07KFBWSSW/ref=ox_sc_act_title_3?smid=A3764XWR7FEFWJ&psc=1
+
+Voltage: 4.8V to 7.2V
+Current: 2.5A (6V)
+
+Important: Servo GND and logic GND must be connected
+
+Small Servos ------------------------------------------------------------------
+
+Refs:
+SG90
+
+Voltage: 4.8V to 6.0V (best: 5V)
+Current: 250mA (no load)
+
+
+
