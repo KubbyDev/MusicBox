@@ -39,28 +39,42 @@ int durations3[] = {
 };
 
 void setup() {
-    pinMode(M1, OUTPUT);
-    pinMode(M2, OUTPUT);    
-    pinMode(M3, OUTPUT);
-    digitalWrite(M1, LOW);
-    digitalWrite(M2, LOW);
-    digitalWrite(M3, LOW);
 }
 
-void loop() {    
-
-    Serial.begin(9600);
-    
-    // Index of the note currently played by each motor
-    int index1 = -1; int index2 = -1; int index3 = -1;
+struct Motor {
+    int* notes;
+    int* durations;
+    int stepPin;
+    // Index of the note currently played
+    int index;
     // Time before the next rise of the STEP pin
     // The value registered here is the given one -100 us
     // To ensure we have time for the low state
-    int delay1 = 0; int delay2 = 0; int delay3 = 0;
+    int current;
     // Saves the state of the STEP pin
-    bool step1 = false; bool step2 = false; bool step3 = false;
+    bool stepHigh;
     // Moment the motor need to switch to the next note
-    unsigned long next1 = 0; unsigned long next2 = 0; unsigned long next3 = 0;
+    unsigned long next;
+};
+
+void initMotor(struct Motor* m, int* notes, int* durations, int pin) {
+    m->notes = notes;
+    m->durations = durations;
+    m->stepPin = pin;
+    m->index = -1;
+    m->current = 0;
+    m->stepHigh = false;
+    m->next = 0;
+    pinMode(m->stepPin, OUTPUT);
+    digitalWrite(m->stepPin, LOW);
+}
+
+void loop() {    
+    
+    struct Motor motors[3];
+    initMotor(motors+0, notes1, durations1, M1);
+    initMotor(motors+1, notes2, durations2, M2);
+    initMotor(motors+2, notes3, durations3, M3);
 
     unsigned long lastUpdate = micros();
     while(1) {
@@ -69,70 +83,37 @@ void loop() {
         unsigned long delta = t - lastUpdate;
         lastUpdate = t;
 
-        delay1 -= delta;
-        delay2 -= delta;
-        delay3 -= delta;
+        for(int i = 0; i < 3; i++) 
+            motors[i].current -= delta;
 
         // Goes low for the last 100 us of the oscillation
-        if(delay1 < 0 && step1) {
-            step1 = false;
-            digitalWrite(M1, LOW);
-        }
-        if(delay2 < 0 && step2) {
-            step2 = false;
-            digitalWrite(M2, LOW);
-        }
-        if(delay3 < 0 && step3) {
-            step3 = false;
-            digitalWrite(M3, LOW);
+        for(int i = 0; i < 3; i++) {
+            if(motors[i].current < 0 && motors[i].stepHigh) {
+                motors[i].stepHigh = false;
+                digitalWrite(motors[i].stepPin, LOW);
+            }
         }
 
         // When the low state has ended, goes to the next oscillation (and note if necessary)
-        if(delay1 < -95) {
-            // If the duration is over: next note
-            if(t > next1) {
-                index1++;
-                next1 = t + 1000UL*(durations1[index1]); // The next note change moment
+        for(int i = 0; i < 3; i++) {
+            if(motors[i].current < -95) {
+                // If the duration is over: next note
+                if(t > motors[i].next) {
+                    motors[i].index++;
+                    motors[i].next = t + 1000UL*((motors[i].durations)[motors[i].index]); // The next note change moment
+                }
+                // Starts a new oscillation
+                int note = (motors[i].notes)[motors[i].index];
+                // Starts the oscillation if the note is not 0
+                if(note) {
+                    motors[i].stepHigh = true;
+                    digitalWrite(motors[i].stepPin, HIGH);
+                }
+                // Makes the fake oscillation last 1 ms if the note is 0
+                else 
+                    note = 1000;  
+                motors[i].current += note; // note - 100 - (overtime on last oscillation)
             }
-            // Starts a new oscillation
-            int note = notes1[index1];
-            // Starts the oscillation if the note is not 0
-            if(note) {
-                step1 = true;
-                digitalWrite(M1, HIGH);
-            }
-            // Makes the fake oscillation last 1 ms if the note is 0
-            else 
-                note = 1000;  
-            delay1 += note; // note - 100 - (overtime on last oscillation)
-        }
-        if(delay2 < -95) {
-            if(t > next2) {
-                index2++;
-                next2 = t + 1000UL*(durations2[index2]);
-            }
-            int note = notes2[index2];
-            if(note) {
-                step2 = true;
-                digitalWrite(M2, HIGH);
-            }
-            else 
-                note = 1000;  
-            delay2 += note;
-        }
-        if(delay3 < -95) {
-            if(t > next3) {
-                index3++;
-                next3 = t + 1000UL*(durations3[index3]);
-            }
-            int note = notes3[index3];
-            if(note) {
-                step3 = true;
-                digitalWrite(M3, HIGH);
-            }
-            else 
-                note = 1000;  
-            delay3 += note;
         }
     }
 }
