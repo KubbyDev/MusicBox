@@ -12,8 +12,9 @@ Longruner A4988: https://www.amazon.fr/gp/product/B071P41ZBW/ref=ox_sc_act_title
 
 Motor driver:
 Voltage for motor: 8V to 35V *
-Current for motor: 1.5A **
-Voltage for logic: 3.3V or 5V 
+Voltage for logic: 3.3V or 5V
+Current draw: 0.5A **
+With 3 motors in parallel and a 12V supply, it only draws 0.6A from the supply :shrug:
 
 (*):
 There can be voltage spikes higher than 35V, even with a 12V power supply 
@@ -21,14 +22,9 @@ These spikes can damage the board. To reduce that risk, connect vmot and gnd wit
 a 47µF or more capacitor
 
 (**) IMPORTANT: 
-Tweak the potentiometer to set the max current 
+Tweak the potentiometer to set the max current (Rsense = 0.1 Ohm)
 (read current limiting section: https://www.pololu.com/product/1182)
-The perfect value should then be 1.5A (a bit below rated current of the motor)
-Checking on the temperature might still be a good idea
-Can handle 2A with heatsink (1A without) and per coil. Total if 2 coils active
-at the same time = 4A (Never happens in full step mode)
-
-Driver thermal protection: YES
+The value of 0.5A is less than the max (1.7A) and sufficient to get decent melodies
 
 Big Servos --------------------------------------------------------------------
 
