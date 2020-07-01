@@ -1,4 +1,4 @@
-int notes1[] = {
+const PROGMEM uint16_t notes1[] = {
     0, 
     C4, D4, E4, F4, G4, A5, B5, C5, 
     0, 
@@ -9,7 +9,7 @@ int notes1[] = {
     C5, D5, E5, F5, G5, A6, B6, C6, 
     0
 };
-int durations1[] = {
+const PROGMEM uint16_t durations1[] = {
     1000, 
     500, 500, 500, 500, 500, 500, 500, 500, 
     8000, 
@@ -21,7 +21,7 @@ int durations1[] = {
     30000
 };
 
-int notes2[] = {
+const PROGMEM uint16_t notes2[] = {
     0, 
     C4, D4, E4, F4, G4, A5, B5, C5, 
     0, 
@@ -32,7 +32,7 @@ int notes2[] = {
     C5, D5, E5, F5, G5, A6, B6, C6, 
     0
 };
-int durations2[] = {
+const PROGMEM uint16_t durations2[] = {
     5000, 
     500, 500, 500, 500, 500, 500, 500, 500, 
     4000, 
@@ -44,7 +44,7 @@ int durations2[] = {
     30000
 };
 
-int notes3[] = {
+const PROGMEM uint16_t notes3[] = {
     0, 
     C4, D4, E4, F4, G4, A5, B5, C5, 
     C4, D4, E4, F4, G4, A5, B5, C5, 
@@ -53,7 +53,7 @@ int notes3[] = {
     C5, D5, E5, F5, G5, A6, B6, C6, 
     0
 };
-int durations3[] = {
+const PROGMEM uint16_t durations3[] = {
     9000, 
     500, 500, 500, 500, 500, 500, 500, 500,
     500, 500, 500, 500, 500, 500, 500, 500, 

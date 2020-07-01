@@ -1,13 +1,23 @@
 import mido
 
-mid = mido.MidiFile('D:\\Bordel\\test.mid')
-track = mid.tracks[1]
+
+mid = mido.MidiFile('C:\\Users\\gbrlj\\Desktop\\PiratesOfTheCaribbean.mid')
+t1 = mid.tracks[2]
+t2 = mid.tracks[1]
+t3 = mid.tracks[3]
+
+tempo = 0
+for m in mid.tracks[0]:
+    if m.type == 'set_tempo':
+        tempo = m.tempo
+mult = tempo / (mid.ticks_per_beat * 1000) # millisecond per tick
+
 
 def notes(trk):
 
     res = []
     currentNote = 0
-    currentStartTime = 0
+    lastNote = 0
     lastNoteStopTime = 0
     time = 0
 
@@ -16,20 +26,27 @@ def notes(trk):
         if n.type == 'note_on':
             # If a note was playing, stops and saves it
             if currentNote != 0:
-                res.append((currentNote, time - currentStartTime))
+                res.append((currentNote, time))
+                # If a note appears twice, saves a small delay even if there is no silence
+                if currentNote == n.note:
+                    res.append((0, time + 10 / mult))  # 10 milliseconds
                 lastNoteStopTime = time
+                lastNote = n.note
             # If no note was playing, saves a silence note
             elif time - lastNoteStopTime > 0:
-                res.append((0, time - lastNoteStopTime))
+                res.append((0, time))
+            # If a note appears twice, saves a small delay even if there is no silence
+            elif lastNote == n.note:
+                res.append((0, time + 10/mult)) # 10 milliseconds
             # Starts playing the new note
             currentNote = n.note
-            currentStartTime = time
         if n.type == 'note_off':
             # Saves the note that was playing if it's the right one
             if n.note == currentNote:
-                res.append((currentNote, time - currentStartTime))
+                res.append((currentNote, time))
                 currentNote = 0
                 lastNoteStopTime = time
+                lastNote = n.note
 
     return res
 
@@ -68,24 +85,30 @@ def nb_to_english(number, offset=0):
     else: raise Exception("Unknown note " + str(number))
 
 
-nts = notes(track)
-print(nts)
+def results(nts, nb, offset=0):
+    global mult
 
-offset = 2
+    n = []
+    for i in nts: n.append(i[0])
+    d = []
+    for i in nts: d.append(i[1])
 
-n = []
-for i in nts: n.append(i[0])
-d = []
-for i in nts: d.append(i[1])
+    print("const PROGMEM uint16_t notes"+str(nb)+"[] = {")
+    print("    ", end='')
+    for i in n: print(nb_to_english(i, offset), end=',')
+    print(0)
+    print("};")
 
-print("int notes1[] = {")
-print("    ", end='')
-for i in n[:-1]: print(nb_to_english(i, offset), end=',')
-print(nb_to_english(n[-1], offset))
-print("};")
+    print("const PROGMEM uint32_t durations"+str(nb)+"[] = {")
+    print("    ", end='')
+    for i in d: print(round(i*mult), end=',')
+    print(4294967295)
+    print("};")
 
-print("int durations1[] = {")
-print("    ", end='')
-for i in d[:-1]: print(i, end=',')
-print(d[-1])
-print("};")
+
+nts1 = notes(t1)
+nts2 = notes(t2)
+nts3 = notes(t3)
+results(nts1, 1, 3)
+results(nts2, 2, 0)
+results(nts3, 3, 0)
