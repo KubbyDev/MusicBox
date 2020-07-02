@@ -10,7 +10,3 @@ I filed the separation between the tubes so the piston doesn't get stuck. But ma
 The piston probably lets air go past it. I should find a way to get better isolation without getting too much friction
 It seems that the whislte should be as free to move as possible to produce a good sound. So I should use some sort of pillars instead of gluing it to the support.
 I think the air blower isn't powerful enough because the sound is clearer when I blow in it instead of using the air blower.
-
-Next steps
-test the blockig mechanism and maybe break one on the borders of the hole (to make blocking easier) to see if it changes the sound
-test the gears mechanism to hopefully learn something from it, then restart from scratch
