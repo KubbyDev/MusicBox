@@ -32,7 +32,7 @@ Refs:
 Morza MG996R: https://www.amazon.fr/gp/product/B07KFBWSSW/ref=ox_sc_act_title_3?smid=A3764XWR7FEFWJ&psc=1
 
 Voltage: 4.8V to 7.2V
-Current: 2.5A (6V)
+Current (my measures, 6V): 1A (no load) 2A (stall)
 
 Important: Servo GND and logic GND must be connected
 
@@ -42,7 +42,8 @@ Refs:
 SG90
 
 Voltage: 4.8V to 6.0V (best: 5V)
-Current: 250mA (no load)
+Current (my measures, 5V): 250mA (no load), 700mA (stall)
 
+Important: Servo GND and logic GND must be connected
 
 

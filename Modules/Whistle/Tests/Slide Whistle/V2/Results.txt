@@ -1,0 +1,11 @@
+Sounds much better be still can't reach the minimum of one octave (I only get D# to G).
+Causes:
+ - The separation between the tubes should be as far as possible from the whistle. When it was centered it messed everything up, now it only messes up the high notes.
+ - The piston leaks air, I think the notes would be clearer if it didn't
+ 
+Other improvements:
+ - The rack hole is too wide, it doesn't help it stay centered
+ 
+Tests to do:
+ - Put something to prevent air leakage around the piston
+ - Test the gear system
