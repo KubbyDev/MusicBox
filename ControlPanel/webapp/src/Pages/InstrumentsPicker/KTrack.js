@@ -20,7 +20,7 @@ export default function KTrack(props) {
                 <KTrackPanel name={props.track.name} />
             </Grid>
             <Grid item>
-                <KPartition notes={props.track.notes} min={props.track.lowest} max={props.track.highest} />
+                <KPartition track={props.track} totallength={props.totallength}/>
             </Grid>
         </Grid>
     );

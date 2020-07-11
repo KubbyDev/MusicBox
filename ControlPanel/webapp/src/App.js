@@ -20,8 +20,9 @@ const theme = createMuiTheme({
         },
         background: {
             main: '#404040',
+            secondary: '#2b2b2b',
             accentuation: '#000000',
-            last: '#222222'
+            last: '#111111'
         }
     },
 });
