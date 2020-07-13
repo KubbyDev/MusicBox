@@ -1,16 +1,17 @@
 from sortedcontainers import SortedList
+from music21.chord import Chord
 
 
-__NOTE_ON = 0
-__NOTE_OFF = 1
+NOTE_ON = 0
+NOTE_OFF = 1
 
 
-class __Event:
+class Event:
     def __init__(self, time, pitch, eventType, noteIndex):
         self.time, self.pitch, self.type, self.noteIndex = time, pitch, eventType, noteIndex
 
 
-class __Chunk:
+class Chunk:
     def __init__(self, start, end, notes): # notes is an array of (pitch, index)
         self.start, self.end, self.notes = start, end, notes
 
@@ -31,13 +32,14 @@ def preprocess(messages, ticks_per_beat, start_tempo):
             continue
         # ON or OFF events
         if m.type in ['note_on', 'note_off']:
-            res.add(__Event(
+            on_event = m.type == 'note_on'
+            res.add(Event(
                 (ticks * tempo) / (ticks_per_beat * 1000),
                 m.note,
-                __NOTE_ON if m.type == 'note_on' else __NOTE_OFF,
-                noteIndex
+                NOTE_ON if on_event else NOTE_OFF,
+                noteIndex if on_event else 0 # The note index is only saved for the ON event
             ))
-            if m.type == 'note_on': noteIndex += 1
+            if on_event: noteIndex += 1
     return res
 
 
@@ -45,14 +47,14 @@ def preprocess(messages, ticks_per_beat, start_tempo):
 # the off event of the first note is less than threshold milliseconds before the on event of the second note.
 # The notes can be of any pitch. In that case, the off event will be moved to the on event time.
 # The output is the sorted list of events given in input
-def clean_overlapping(events, threshold=25):
+def clean_overlapping(events, threshold=30):
     # TODO: on on off off samepitch
     for e in events:
         # Only processes ON events
-        if e.type == __NOTE_OFF: continue
+        if e.type == NOTE_OFF: continue
         # Gets all the OFF events between the time of this event and threshold ms after
-        tocorrect = events.irange(e.time, e.time+threshold)
-        tocorrect = list(filter(lambda ev: ev.type == __NOTE_OFF, tocorrect))
+        tocorrect = events.irange(e, Event(e.time+threshold,0,0,0))
+        tocorrect = list(filter(lambda ev: ev.type == NOTE_OFF, tocorrect))
         if not tocorrect: continue
         # Moves these events to the time of the on event
         first = events.index(tocorrect[0])
@@ -64,29 +66,74 @@ def clean_overlapping(events, threshold=25):
 # each chunk containing a start point, an end point (milliseconds) and a list of notes (pitch, index)
 def to_chunks(events):
     res = []
-    notes = []
+    notes = SortedList()
     chunkStartTime = events[0].time
     for event in events:
-        # Saves the last chunk everytime the played notes change
-        if event.time != chunkStartTime:
-            res.append(__Chunk(
+        # Saves the last chunk everytime the played notes change (only if there are notes playing)
+        if event.time != chunkStartTime and len(notes) > 0:
+            res.append(Chunk(
                 chunkStartTime,
                 event.time,
-                notes
+                notes[:]
             ))
-        if event.type == __NOTE_OFF: notes.remove((event.pitch, event.noteIndex))
-        if event.type == __NOTE_ON: notes.append((event.pitch, event.noteIndex))
+        if event.type == NOTE_ON: notes.add((event.pitch, event.noteIndex))
+        if event.type == NOTE_OFF:
+            for n in notes:
+                if n[0] == event.pitch: notes.remove(n)
         chunkStartTime = event.time
+    return res
 
 
 # Takes a list of chunks from the to_chunks function and separates it into lists of
-# notes (pitch, start, end, index).
+# notes (pitch, start, end, index). The returned lists are the root and the list of harmonics
 def separate_chords(chunks):
-    pass
+    root = []
+    harmonics = []
+    nbHarmonics = 0
+    for chunk in chunks:
+        nbNotes = len(chunk.notes)
+        # Adds harmonics partitions if necessary
+        while nbNotes > nbHarmonics+1:
+            l = []
+            harmonics.append(l)
+            nbHarmonics += 1
+        # Determines the root of the chord
+        chord = Chord(list(n for n,i in chunk.notes))
+        rootIndex = list(chord.pitches).index(chord.root())
+        # Distributes the notes in the lists
+        harmonicIndex = 0
+        for i in range(nbNotes):
+            note = (
+                chunk.start,
+                chunk.end,
+                chunk.notes[i][0], # pitch
+                chunk.notes[i][1]  # index
+            )
+            if i == rootIndex:
+                root.append(note)
+            else:
+                harmonics[harmonicIndex].append(note)
+                harmonicIndex += 1
+    return root, harmonics
 
 
-# Takes a list of notes (pitch, start, end, index) and adds stops when a note stops
-# and starts again with the same pitch. It also combines these notes when it is the same index.
-# The return value is a list of notes (pitch, start, end)
+# Takes a list of notes (pitch, start, end, index) and adds stops (the first note stops sooner)
+# when a note stops and starts again with the same pitch. It also combines these notes when it is
+# the same index. The returned value is a list of notes (pitch, start, end)
 def process_stops(track, stopLength=10):
-    pass
+    res = []
+    current = list(track[0])
+    for note in track[1:]:
+        if current[3] == note[3]: # Same note (same index)
+            current[1] = note[1] # Moves the note end
+            continue
+        # Different indices
+        res.append((
+            current[0],
+            current[1] - (stopLength if current[2] == note[2] else 0), # Adds an empty space if pitches are equal
+            current[2]
+        ))
+        current = list(note)
+    # Adds the last note
+    res.append((current[0], current[1], current[2]))
+    return res

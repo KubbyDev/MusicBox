@@ -16,10 +16,10 @@ export default function KTrack(props) {
             justify='flex-start'
             alignItems='center'
         >
-            <Grid item>
+            <Grid item xs={2}>
                 <KTrackPanel name={props.track.name} />
             </Grid>
-            <Grid item>
+            <Grid item xs={10}>
                 <KPartition track={props.track} totallength={props.totallength}/>
             </Grid>
         </Grid>
