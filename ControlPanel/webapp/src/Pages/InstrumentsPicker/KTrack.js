@@ -1,5 +1,5 @@
 import React from 'react';
-import KTrackPanel from "./KTrackPanel";
+import KTrackPanel from "./Panel/KTrackPanel";
 import Grid from "@material-ui/core/Grid";
 import KPartition from "./KPartition";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -15,12 +15,23 @@ export default function KTrack(props) {
             className={classes.track}
             justify='flex-start'
             alignItems='center'
+            spacing={1}
         >
             <Grid item xs={2}>
-                <KTrackPanel name={props.track.name} />
+                <KTrackPanel
+                    name={props.track.name}
+                    instruments={props.instruments}
+                    selectedInstruments={props.selectedInstruments}
+                    setSelectedInstruments={props.setSelectedInstruments}
+                    selected={props.selected}
+                    setSelected={props.setSelected}
+                />
             </Grid>
             <Grid item xs={10}>
-                <KPartition track={props.track} totallength={props.totallength}/>
+                <KPartition
+                    track={props.track}
+                    totallength={props.totallength}
+                />
             </Grid>
         </Grid>
     );

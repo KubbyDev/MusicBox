@@ -1,6 +1,6 @@
 import React from 'react';
 import KTrack from "./KTrack";
-import Grid from "@material-ui/core/Grid";
+import {Grid, Button} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 export default function KInstrumentsPage() {
@@ -14,20 +14,89 @@ export default function KInstrumentsPage() {
     ];
     const totallength = 77625;
 
+    const instruments = [
+        {name:'Stepper1', warnings:[{track:'Track1', message:'Must go up one octave'}, {track:'Track2', message:'Must go up one octave'}], errors: []},
+        {name:'Stepper2', warnings:[{track:'Track0', message:'Must go up two octaves'}], errors: []},
+        {name:'Stepper3', warnings:[], errors: []},
+        {name:'Whistle', warnings:[], errors: [{track:'Track0', message:'Too fast'}]},
+        {name:'Drum', warnings:[{track:'Track1', message:'Must go up one octave'}], errors: [{track:'Track0', message:'Loss of notes'}]},
+        {name:'Tesla', warnings:[], errors: []},
+        {name:'Harp', warnings:[], errors: []},
+    ];
+
+    // Filters the errors and warnings for a particular track
+    const instrumentsForTrack = (track) => {
+        return instruments.map(inst => ({
+            name: inst.name,
+            warnings: inst.warnings.filter(w => w.track === track),
+            errors: inst.warnings.filter(e => e.track === track)
+        }));
+    };
+
+    let selectedInstruments = [];
+    for(let i=0; i < tracks.length; i++)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        selectedInstruments.push(React.useState([]));
+    /* When filled: [
+           [[inst0, inst1], setInstrumentsTrack0],
+           [[inst5], setInstrumentsTrack1],
+           [[inst3], setInstrumentsTrack2]
+       ]
+    */
+
+    let selectedTracks = [];
+    for(let i = 0; i < tracks.length; i++)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        selectedTracks.push(React.useState(false));
+    /* When filled: [
+           [selectedTrack0, setSelectedTrack0],
+           [selectedTrack1, setSelectedTrack1],
+           [selectedTrack2, setSelectedTrack2]
+       ]
+    */
+
     return (
-        <Grid
-            container
-            spacing={0}
-            alignItems='stretch'
-            direction='column'
-            className={classes.trackslist}
-        >
-            {tracks.map(track =>
-                <Grid item xs={12} className={classes.track}>
-                    <KTrack track={track} totallength={totallength}/>
+        <>
+            <Grid
+                container
+                direction='row'
+                justify='space-between'
+                alignItems='center'
+            >
+                <Grid item>
+                    <Button onClick={()=>{ for(let t of selectedTracks) t[1](true) }}>
+                        Select all
+                    </Button>
+                    <Button onClick={()=>{ for(let t of selectedTracks) t[1](false) }}>
+                        Deselect all
+                    </Button>
                 </Grid>
-            )}
-        </Grid>
+                <Grid item>
+                    <Button>Play on browser</Button>
+                    <Button>Play on music box</Button>
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                alignItems='stretch'
+                direction='column'
+                className={classes.trackslist}
+            >
+                {tracks.map((track, index) =>
+                    <Grid item xs={12} className={classes.track}>
+                        <KTrack
+                            track={track}
+                            totallength={totallength}
+                            instruments={instrumentsForTrack(track.name)}
+                            selectedInstruments={selectedInstruments[index][0]}
+                            setSelectedInstruments={selectedInstruments[index][1]}
+                            selected={selectedTracks[index][0]}
+                            setSelected={selectedTracks[index][1]}
+                        />
+                    </Grid>
+                )}
+            </Grid>
+        </>
     );
 }
 
@@ -37,6 +106,6 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(1),
     },
     track: {
-        marginBottom: theme.spacing(1),
+        marginBottom: theme.spacing(2),
     },
 }));

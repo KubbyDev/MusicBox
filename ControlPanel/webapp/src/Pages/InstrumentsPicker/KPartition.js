@@ -10,6 +10,8 @@ export default function KPartition(props) {
 
     const drawCanvas = (canvas) => {
 
+        if(!canvas) return;
+
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = (props.track.highest - props.track.lowest)*noteHeight;
