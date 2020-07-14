@@ -28,8 +28,8 @@ export default function KInstrumentsPage() {
     const instrumentsForTrack = (track) => {
         return instruments.map(inst => ({
             name: inst.name,
-            warnings: inst.warnings.filter(w => w.track === track),
-            errors: inst.warnings.filter(e => e.track === track)
+            warnings: inst.warnings.filter(w => w.track === track).map(w => w.message),
+            errors: inst.errors.filter(e => e.track === track).map(e => e.message)
         }));
     };
 

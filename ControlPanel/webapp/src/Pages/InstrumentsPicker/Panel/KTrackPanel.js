@@ -51,6 +51,8 @@ export default function KTrackPanel(props) {
                             props.instruments.map(instrument =>
                                 <Dropdown.Item
                                     as={KInstrument}
+                                    errors={instrument.errors}
+                                    warnings={instrument.warnings}
                                     active={props.selectedInstruments.includes(instrument.name)}
                                     onSelect={instname => {
                                         let res = props.selectedInstruments.slice();
@@ -59,7 +61,7 @@ export default function KTrackPanel(props) {
                                         props.setSelectedInstruments(res);
                                     }}
                                     eventKey={instrument.name}
-                                    >
+                                >
                                     {instrument.name}
                                 </Dropdown.Item>
                             )
