@@ -2,8 +2,8 @@ import mido
 import track_tools
 
 
-mid = mido.MidiFile('C:\\Users\\gbrlj\\Desktop\\test.mid')
-track = mid.tracks[1]
+mid = mido.MidiFile('D:\\Bordel\\test.mid')
+track = mid.tracks[2]
 
 tempo = 0
 for m in mid.tracks[0]:
@@ -36,3 +36,5 @@ for t in tracks:
     print(']},')
     i+=1
 print('];\nconst totallength = %i;' % round(end))
+
+

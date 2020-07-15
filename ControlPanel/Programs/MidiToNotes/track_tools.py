@@ -19,7 +19,6 @@ class Chunk:
 # Converts a list of messages from mido to a sorted list of on/off events (timeMs, pitch, type, index)
 # Takes into account tempo changes. The sorted list is in increasing timeMs
 def preprocess(messages, ticks_per_beat, start_tempo):
-    # TODO Aftertouch
     res = SortedList(key=lambda e: e.time)
     ticks = 0 # Counts the ticks from the beginning
     tempo = start_tempo
@@ -33,6 +32,7 @@ def preprocess(messages, ticks_per_beat, start_tempo):
         # ON or OFF events
         if m.type in ['note_on', 'note_off']:
             on_event = m.type == 'note_on'
+            if on_event and m.velocity == 0: on_event = False # note_on with velocity 0 is actually a note_off
             res.add(Event(
                 (ticks * tempo) / (ticks_per_beat * 1000),
                 m.note,
@@ -59,7 +59,10 @@ def clean_overlapping(events, threshold=30):
         # Moves these events to the time of the on event
         first = events.index(tocorrect[0])
         for i in range(len(tocorrect)):
-            events[i+first].time = e.time
+            event = events[i+first]
+            events.remove(event)
+            event.time = e.time
+            events.add(event)
 
 
 # Takes a sorted list of on/off events (timeMs, pitch, type, index) and translates it into a list of chunks,
@@ -85,7 +88,7 @@ def to_chunks(events):
 
 
 # Takes a list of chunks from the to_chunks function and separates it into lists of
-# notes (pitch, start, end, index). The returned lists are the root and the list of harmonics
+# notes (start, end, pitch, index). The returned lists are the root and the list of harmonics
 def separate_chords(chunks):
     root = []
     harmonics = []
@@ -117,9 +120,9 @@ def separate_chords(chunks):
     return root, harmonics
 
 
-# Takes a list of notes (pitch, start, end, index) and adds stops (the first note stops sooner)
+# Takes a list of notes (start, end, pitch, index) and adds stops (the first note stops sooner)
 # when a note stops and starts again with the same pitch. It also combines these notes when it is
-# the same index. The returned value is a list of notes (pitch, start, end)
+# the same index. The returned value is a list of notes (start, end, pitch)
 def process_stops(track, stopLength=10):
     res = []
     current = list(track[0])
@@ -137,3 +140,11 @@ def process_stops(track, stopLength=10):
     # Adds the last note
     res.append((current[0], current[1], current[2]))
     return res
+
+
+# Merges two list of notes (start, end, pitch). Makes sure the notes are ordered by starting time
+def merge(tracks):
+    sl = SortedList(key=lambda n: n[0]) # Sorts by start time
+    for track in tracks:
+        sl.update(track)
+    return sl[:]
