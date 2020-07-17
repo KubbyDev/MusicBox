@@ -1,12 +1,11 @@
 import React from 'react';
 import {useTheme} from "@material-ui/styles";
 
-// TEMPORARY
-const noteHeight = 8;
 
 export default function KPartition(props) {
 
     const theme = useTheme();
+    const noteHeight = 8;
 
     const drawCanvas = (canvas) => {
 

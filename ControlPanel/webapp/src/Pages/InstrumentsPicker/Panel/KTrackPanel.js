@@ -41,10 +41,10 @@ export default function KTrackPanel(props) {
             <Grid item>
                 <Dropdown as={ButtonGroup}>
                     {/* Dropdown title */}
-                    <Button variant={props.selectedInstruments.length > 0 ? 'success' : 'secondary'}>
+                    <Button variant={props.selectedInstruments.length > 0 ? 'danger' : 'secondary'}>
                         {props.selectedInstruments.join(', ') || 'Select an instrument'}
                     </Button>
-                    <Dropdown.Toggle variant={props.selectedInstruments.length > 0 ? 'success' : 'secondary'}/>
+                    <Dropdown.Toggle variant={props.selectedInstruments.length > 0 ? 'danger' : 'secondary'}/>
                     {/* Dropdown buttons */}
                     <Dropdown.Menu>
                         {
@@ -81,8 +81,5 @@ const useStyles = makeStyles((theme) => ({
     },
     checkbox: {
         color: theme.palette.primary.main,
-        '&$checked': {
-            color: theme.palette.primary.main,
-        },
     }
 }));

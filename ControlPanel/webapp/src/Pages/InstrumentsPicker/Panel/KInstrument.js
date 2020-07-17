@@ -20,13 +20,13 @@ export default function KInstrument(props) {
                 justify='flex-start'
                 spacing={0}
             >
+                <Grid item xs={8}>
+                    <SafeAnchor {...props}/>
+                </Grid>
                 <Grid item xs={4}>
                     {props.errors.length > 0 ? <ErrorIcon style={{color:'red'}}/>
                         : (props.warnings.length > 0 ? <WarningIcon style={{color:'yellow'}}/>
                             : <></>)}
-                </Grid>
-                <Grid item xs={8}>
-                    <SafeAnchor {...props}/>
                 </Grid>
             </Grid>
         </Tooltip>

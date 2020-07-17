@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.5.0",
     "konva": "^7.0.3",
+    "note-parser": "^2.0.1",
     "npm": "^6.14.6",
     "react": "^16.13.1",
     "react-art": "^16.13.1",
@@ -23,7 +24,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-router-native": "^5.2.0",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "tone": "^13.8.25"
   },
   "scripts": {
     "start": "react-scripts start",
