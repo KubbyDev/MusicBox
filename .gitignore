@@ -2,3 +2,4 @@
 # Temporary files
 __pycache__
 *.blend1
+**/fp-info-cache
