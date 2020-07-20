@@ -18,7 +18,7 @@ export default function KPartition(props) {
         ctx.fillStyle = theme.palette.background.secondary;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        const mult = canvas.width/props.totallength;
+        const mult = canvas.width/props.totalLength;
         ctx.fillStyle = theme.palette.primary.main;
         for (let note of props.track.notes) {
             const row = props.track.highest - note.pitch;

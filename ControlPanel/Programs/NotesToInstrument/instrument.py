@@ -1,10 +1,16 @@
+
 class Instrument:
-    def preprocess(self, notes):
+    def requirements(self, notes):
         """
-        Modifies a notes list to make it playable by the instrument
+        Lists the modifications to make to a notes list to make it playable by the instrument
+            [
+                {'type':'error','message':'Error message'},
+                {'type':'warning','message':'Warning message 1'},
+                {'type':'warning','message':'Warning message 2'},
+            ]
 
         :param notes: a list of notes
-        :return: A new notes list that the instrument can play
+        :return: A list of warnings/errors dict
         """
         pass
     def generate(self, notes):

@@ -4,6 +4,8 @@ import KInstrumentsPage from "./Pages/InstrumentsPicker/KInstrumentsPage";
 import { Route, Switch } from "react-router-dom";
 import {createMuiTheme} from "@material-ui/core";
 import {ThemeProvider} from "@material-ui/styles";
+import KUploadPage from "./Pages/Upload/KUploadPage";
+import KInstrumentsPageLoader from "./Pages/InstrumentsPicker/KInstrumentsPageLoader";
 
 const theme = createMuiTheme({
     palette: {
@@ -34,7 +36,8 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <Switch>
                 <Route exact path='/' component={KHomePage}/>
-                <Route exact path='/instrumentpicker' component={KInstrumentsPage}/>
+                <Route exact path='/instrumentpicker' component={KInstrumentsPageLoader}/>
+                <Route exact path='/upload' component={KUploadPage}/>
             </Switch>
         </ThemeProvider>
     );

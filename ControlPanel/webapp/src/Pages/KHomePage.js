@@ -11,6 +11,7 @@ export default function KHomePage() {
 
     const buttons = [
         {name: 'Instruments\nPicker', destination:'/instrumentpicker', color: 'aqua'},
+        {name: 'Upload\nFile', destination:'/upload', color: 'magenta'},
     ]//.concat(Array(6).fill({name:'Button',destination:'/',color:'aqua'}, 0, 6)).slice(0,6);
 
     const handleClick = (destination) => {

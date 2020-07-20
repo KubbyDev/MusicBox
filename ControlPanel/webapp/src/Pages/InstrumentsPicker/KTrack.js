@@ -30,7 +30,7 @@ export default function KTrack(props) {
             <Grid item xs={10}>
                 <KPartition
                     track={props.track}
-                    totallength={props.totallength}
+                    totalLength={props.totalLength}
                 />
             </Grid>
         </Grid>

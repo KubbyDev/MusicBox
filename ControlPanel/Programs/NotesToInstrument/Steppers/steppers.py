@@ -1,4 +1,4 @@
-import Instrument
+from Programs.NotesToInstrument.instrument import Instrument
 
 _min_pitch = 30
 _max_pitch = 50
