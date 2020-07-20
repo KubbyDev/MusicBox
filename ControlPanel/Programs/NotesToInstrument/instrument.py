@@ -1,31 +1,30 @@
 
 class Instrument:
+    def __init__(self, name=None, index=None):
+        if name: self.name = name
+        elif index: self.name = type(self).__name__ + str(index)
+        else: self.name = type(self).__name__
     def requirements(self, notes):
         """
         Lists the modifications to make to a notes list to make it playable by the instrument
-            [
-                {'type':'error','message':'Error message'},
-                {'type':'warning','message':'Warning message 1'},
-                {'type':'warning','message':'Warning message 2'},
-            ]
 
         :param notes: a list of notes
-        :return: A list of warnings/errors dict
+        :return: a Requirements object containing the list of warnings and errors
         """
-        pass
-    def generate(self, notes):
+        raise NotImplementedError()
+    def generate(self, notes, requirements):
         """
-        Generates an object in the right format so that the instrument can directly use it
-        The notes must be playable (they must have gone through the preprocess function)
+        Generates an object in the right format so that the instrument can directly use it.
 
+        :param requirements: the preprocessing that needs to be done
         :param notes: a preprocessed list of notes
         :return: an object that can be sent directly to the instrument
         """
-        pass
+        raise NotImplementedError()
     def transfer(self, data):
         """
         Transfers the data to the right place so the instrument can access it
 
         :param data: a data object returned by the generate function
         """
-        pass
+        raise NotImplementedError()

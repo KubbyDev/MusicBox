@@ -1,5 +1,6 @@
 from flask import Flask, send_from_directory, jsonify, request
 from Programs.MidiToNotes import main as miditonotes
+from Programs.NotesToInstrument import main as notestoinstrument
 from werkzeug import serving
 
 # Initialisation --------------------------------------------------------------
@@ -57,19 +58,11 @@ def notes_progress():
 
 @app.route('/api/instruments')
 def instruments():
-    return jsonify([
-        {'name':'Stepper1', 'warnings':[{'track':'Track1', 'message':'Must go up one octave'}, {'track':'Track2', 'message':'Must go up one octave'}], 'errors': []},
-        {'name':'Stepper2', 'warnings':[{'track':'Track0', 'message':'Must go up two octaves'}], 'errors': []},
-        {'name':'Stepper3', 'warnings':[], 'errors': []},
-        {'name':'Whistle', 'warnings':[], 'errors': [{'track':'Track0', 'message':'Too fast'}]},
-        {'name':'Drum', 'warnings':[{'track':'Track1', 'message':'Must go up one octave'}], 'errors': [{'track':'Track0', 'message':'Loss of notes'}]},
-        {'name':'Tesla', 'warnings':[], 'errors': []},
-        {'name':'Harp', 'warnings':[], 'errors': []},
-    ])
+    return jsonify(notestoinstrument.instruments_results)
 
 @app.route('/api/instruments/progress')
 def instruments_progress():
-    return jsonify({'percent': 100, 'status':'Done'})
+    return jsonify(notestoinstrument.get_progression())
 
 # -----------------------------------------------------------------------------
 

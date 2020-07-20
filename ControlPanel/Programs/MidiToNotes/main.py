@@ -2,17 +2,11 @@ import mido
 import threading
 from Programs import tools
 import Programs.MidiToNotes.track_tools as track_tools
+from Programs.NotesToInstrument import main as notestoinstrument
 
 
-# Results list
-# Each index corresponds to a thread during a conversion .Each thread
-# will place in its spot a list of tracks. Each track is a dictionnary
-# containing information about the track and a list of notes. Each note
-# is a dictionnary with information about the note
-_results = []
 # True until the conversion is done
 _working = False
-
 # Stores the last conversion results
 conversion_results = {'tracks':[],'totalLength':0}
 
@@ -28,10 +22,14 @@ def get_tempo(midifile):
 
 
 # Does the midi to notes conversion on the specified track and computes
-# some additionnal information. The result is stored in _results
-# at the specified index in a dictionnary
-def _to_notes(miditrack, index, tpb, tempo):
-    global _results
+# some additionnal information. The result is stored in the specified
+# list at the specified index in a dictionnary
+# Results list:
+# Each index corresponds to a thread during a conversion. Each thread
+# will place in its spot a list of tracks. Each track is a dictionnary
+# containing information about the track and a list of notes. Each note
+# is a dictionnary with information about the note
+def _to_notes(miditrack, results, index, tpb, tempo):
     # Converts the midi events to a more usable list of event
     events = track_tools.preprocess(miditrack, tpb, tempo)
     # Does some cleaning with overlapping notes
@@ -57,7 +55,7 @@ def _to_notes(miditrack, index, tpb, tempo):
             if note[2] < lowest: lowest = note[2] # Lowest pitch
             notes.append({'start':note[0],'end':note[1],'pitch':note[2]})
         # Saves the results
-        _results[index].append({
+        results[index].append({
             'name': miditrack.name + str(i),
             'lowest': lowest,
             'highest': highest,
@@ -69,15 +67,15 @@ def _to_notes(miditrack, index, tpb, tempo):
 # Converts all the tracks in the musicfile in ServerStorage
 def _convert(file):
     global _working
-    global _results
     global conversion_results
     # Starts a thread for the conversion of each track
-    _results = []
+    results = []
     threads = []
     for i in range(1, len(file.tracks)):
-        _results.append([])
+        results.append([])
         t = threading.Thread(target=_to_notes, args=(
             file.tracks[i],
+            results,
             i-1,
             file.ticks_per_beat,
             get_tempo(file)
@@ -89,13 +87,15 @@ def _convert(file):
     # Post processes the results
     total_length = 0
     tracks = []
-    for thread in _results:
+    for thread in results:
         for track in thread:
             length = track.pop('length')
             if length > total_length: total_length = length
             tracks.append(track)
     conversion_results = {'tracks':tracks,'totalLength':total_length}
     _working = False
+    # Starts the requirements computation
+    notestoinstrument.start_instruments_computation()
 
 
 # Starts the conversion of all the tracks in the
