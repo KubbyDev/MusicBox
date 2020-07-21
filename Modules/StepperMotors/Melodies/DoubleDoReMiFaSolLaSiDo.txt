@@ -1,12 +1,12 @@
 const PROGMEM uint16_t notes1[] = {
     0, 
-    C4, D4, E4, F4, G4, A5, B5, C5, 
-    0, 
-    C4, D4, E4, F4, G4, A5, B5, C5, 
-    0, 
-    C5, D5, E5, F5, G5, A6, B6, C6, 
+    C4, D4, E4, F4, G4, A4, B4, C5, 
     0,
-    C5, D5, E5, F5, G5, A6, B6, C6, 
+    C4, D4, E4, F4, G4, A4, B4, C5, 
+    0, 
+    C5, D5, E5, F5, G5, A5, B5, C6, 
+    0,
+    C5, D5, E5, F5, G5, A5, B5, C6, 
     0
 };
 const PROGMEM uint16_t durations1[] = {
@@ -23,13 +23,13 @@ const PROGMEM uint16_t durations1[] = {
 
 const PROGMEM uint16_t notes2[] = {
     0, 
-    C4, D4, E4, F4, G4, A5, B5, C5, 
+    C4, D4, E4, F4, G4, A4, B4, C5, 
     0, 
-    C4, D4, E4, F4, G4, A5, B5, C5, 
+    C4, D4, E4, F4, G4, A4, B4, C5, 
     0, 
-    C5, D5, E5, F5, G5, A6, B6, C6, 
+    C5, D5, E5, F5, G5, A5, B5, C6, 
     0,
-    C5, D5, E5, F5, G5, A6, B6, C6, 
+    C5, D5, E5, F5, G5, A5, B5, C6, 
     0
 };
 const PROGMEM uint16_t durations2[] = {
@@ -46,11 +46,11 @@ const PROGMEM uint16_t durations2[] = {
 
 const PROGMEM uint16_t notes3[] = {
     0, 
-    C4, D4, E4, F4, G4, A5, B5, C5, 
-    C4, D4, E4, F4, G4, A5, B5, C5, 
+    C4, D4, E4, F4, G4, A4, B4, C5, 
+    C4, D4, E4, F4, G4, A4, B4, C5, 
     0, 
-    C5, D5, E5, F5, G5, A6, B6, C6, 
-    C5, D5, E5, F5, G5, A6, B6, C6, 
+    C5, D5, E5, F5, G5, A5, B5, C6, 
+    C5, D5, E5, F5, G5, A5, B5, C6, 
     0
 };
 const PROGMEM uint16_t durations3[] = {

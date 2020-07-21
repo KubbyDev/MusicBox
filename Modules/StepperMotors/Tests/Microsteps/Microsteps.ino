@@ -18,9 +18,9 @@
 #define F4d 2674 // FA#
 #define G4 2515 // SOL
 #define G4d 2375 // SOL#
-#define A5 2243 // LA
-#define A5d 2112 // LA#
-#define B5 1996 // SI
+#define A4 2243 // LA
+#define A4d 2112 // LA#
+#define B4 1996 // SI
 #define C5 1886 // DO
 
 void setup() {
@@ -34,8 +34,8 @@ void loop() {
     play(E4, 333);
     play(F4, 333);
     play(G4, 333);
-    play(A5, 333);
-    play(B5, 333);
+    play(A4, 333);
+    play(B4, 333);
     play(C5, 333);
 
     playMicrostep(C4, 333);
@@ -43,8 +43,8 @@ void loop() {
     playMicrostep(E4, 333);
     playMicrostep(F4, 333);
     playMicrostep(G4, 333);
-    playMicrostep(A5, 333);
-    playMicrostep(B5, 333);
+    playMicrostep(A4, 333);
+    playMicrostep(B4, 333);
     playMicrostep(C5, 333);
 }
 

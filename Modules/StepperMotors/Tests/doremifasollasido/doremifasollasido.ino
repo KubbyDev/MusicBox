@@ -3,9 +3,9 @@
 #define M2 4
 #define M3 5
 
-#define A4 4489 // LA
-#define A4d 4239 // LA#
-#define B4 4001 // SI
+#define A3 4489 // LA
+#define A3d 4239 // LA#
+#define B3 4001 // SI
 
 #define C4 3778 // DO
 #define C4d 3567 // DO#
@@ -16,9 +16,9 @@
 #define F4d 2674 // FA#
 #define G4 2515 // SOL
 #define G4d 2375 // SOL#
-#define A5 2243 // LA
-#define A5d 2112 // LA#
-#define B5 1996 // SI
+#define A4 2243 // LA
+#define A4d 2112 // LA#
+#define B4 1996 // SI
 
 #define C5 1886 // DO
 #define C5d 1776 // DO#
@@ -29,9 +29,9 @@
 #define F5d 1328 // FA#
 #define G5 1252 // SOL
 #define G5d 1182 // SOL#
-#define A6 1116 // LA
-#define A6d 1053 // LA#
-#define B6 993 // SI
+#define A5 1116 // LA
+#define A5d 1053 // LA#
+#define B5 993 // SI
 
 #define C6 936 // DO
 
@@ -67,8 +67,8 @@ void doremifasollasidoLOW(int motor) {
     play(E4, 333, motor);
     play(F4, 333, motor);
     play(G4, 333, motor);
-    play(A5, 333, motor);
-    play(B5, 333, motor);
+    play(A4, 333, motor);
+    play(B4, 333, motor);
     play(C5, 333, motor);
 }
 
@@ -78,7 +78,7 @@ void doremifasollasidoHIGH(int motor) {
     play(E5, 333, motor);
     play(F5, 333, motor);
     play(G5, 333, motor);
-    play(A6, 333, motor);
-    play(B6, 333, motor);
+    play(A5, 333, motor);
+    play(B5, 333, motor);
     play(C6, 333, motor);
 }

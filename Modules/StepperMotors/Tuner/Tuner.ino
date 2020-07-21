@@ -9,7 +9,7 @@
 #define NEXT_PIN 5
 
 #define START 1886
-#define OCTAVE 6 // The number of the octave (used for the final display)
+#define OCTAVE 5 // The number of the octave (used for the final display)
 
 void setup() {
     
@@ -128,7 +128,7 @@ void displayResults(int* results) {
 
     // Puts the octave number in the middle of each string
     for(int i = 0; i < 13; i++)
-        notes[i][1] = OCTAVE + '0' + (i > 8 ? 1 : 0);
+        notes[i][1] = '0' + OCTAVE + (i == 12 ? 1 : 0);
                 
     for(int i = 0; i < 13; i++) {
         Serial.print("#define ");
