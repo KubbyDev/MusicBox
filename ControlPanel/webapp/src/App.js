@@ -1,6 +1,5 @@
 import React from 'react';
 import KHomePage from "./Pages/KHomePage";
-import KInstrumentsPage from "./Pages/InstrumentsPicker/KInstrumentsPage";
 import { Route, Switch } from "react-router-dom";
 import {createMuiTheme} from "@material-ui/core";
 import {ThemeProvider} from "@material-ui/styles";
@@ -11,7 +10,7 @@ const theme = createMuiTheme({
     palette: {
         primary: {
             main: '#9d0000',
-            light: '#ff5555',
+            light: '#ff2d2d',
         },
         secondary: {
             main: '#ffffff',

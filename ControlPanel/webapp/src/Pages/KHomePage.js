@@ -12,7 +12,7 @@ export default function KHomePage() {
     const buttons = [
         {name: 'Instruments\nPicker', destination:'/instrumentpicker', color: 'aqua'},
         {name: 'Upload\nFile', destination:'/upload', color: 'magenta'},
-    ]//.concat(Array(6).fill({name:'Button',destination:'/',color:'aqua'}, 0, 6)).slice(0,6);
+    ]
 
     const handleClick = (destination) => {
         console.log(destination);
@@ -30,7 +30,7 @@ export default function KHomePage() {
                     if (!row)
                         return (<></>);
                     return (
-                        <Grid item xs={6}>
+                        <Grid item xs={12}>
                             <Grid
                                 container
                                 direction='row'
@@ -47,7 +47,9 @@ export default function KHomePage() {
                                                     onClick={() => handleClick(button.destination)}
                                                     className={classes.button}
                                                     style={{backgroundColor: button.color}}
-                                                />
+                                                >
+                                                    {button.name}
+                                                </Button>
                                             </Grid>
                                         )
                                     })
@@ -63,12 +65,16 @@ export default function KHomePage() {
 
 const useStyles = makeStyles(theme => ({
     button: {
-        width: '100%',
-        height: '100%',
+        width: '80%',
+        height: '80%',
+        color: theme.palette.text.main,
+        paddingTop: '40%',
+        paddingBottom: '40%',
+        fontSize: '60',
     },
     maingrid: {
         width: '100%',
-        height: '100%',
+        height: '100',
     },
     rowgrid: {
         width: '100%',

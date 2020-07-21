@@ -17,7 +17,7 @@ export default function KTrackPanel(props) {
             alignItems='center'
             justify='center'
         >
-            {/* Track title and checkbox */}
+            {/* Track title and checkbox --------------------------------------------------------------------------- */}
             <Grid item className={classes.name}>
                 <Grid
                     container
@@ -37,7 +37,7 @@ export default function KTrackPanel(props) {
                     </Grid>
                 </Grid>
             </Grid>
-            {/* Instruments selection dropdown */}
+            {/* Instruments selection dropdown --------------------------------------------------------------------- */}
             <Grid item>
                 <Dropdown as={ButtonGroup}>
                     {/* Dropdown title */}

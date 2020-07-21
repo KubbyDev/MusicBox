@@ -1,17 +1,23 @@
 import React from 'react';
+import Button from "@material-ui/core/Button";
 
 export default function KUploadPage(props) {
 
-    const onChangeHandler = (e) => {
+    let file = null;
+
+    const upload = () => {
         fetch('/api/musicfile', {
             method: 'post',
-            body: e.target.files[0],
+            body: file,
         })
-            .then(r => console.log(r))
-            .catch(e => console.error(e));
+            .then(console.log)
+            .catch(console.error);
     }
 
     return (
-        <input type="file" name="file" onChange={onChangeHandler}/>
+        <>
+            <input type="file" name="file" onChange={(e) => file = e.target.files[0]}/>
+            <Button onClick={upload}>Upload</Button>
+        </>
     );
 }

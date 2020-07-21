@@ -67,6 +67,7 @@ export default function KInstrumentsPage(props) {
 
     return (
         <>
+            {/* Top toolbar ---------------------------------------------------------------------------------------- */}
             <Grid
                 container
                 direction='row'
@@ -117,6 +118,7 @@ export default function KInstrumentsPage(props) {
                     </Grid>
                 </Grid>
             </Grid>
+            {/* Tracks --------------------------------------------------------------------------------------------- */}
             <Grid
                 container
                 alignItems='stretch'
