@@ -4,8 +4,10 @@ from Programs.NotesToInstrument.Tools import \
     generation as genTools, \
     transfer as trTools
 
+
 _min_pitch = 57
 _max_pitch = 84
+
 
 class Stepper(Instrument):
     def requirements(self, track):

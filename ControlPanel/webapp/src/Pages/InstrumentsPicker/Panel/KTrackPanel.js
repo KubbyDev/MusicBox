@@ -10,6 +10,19 @@ export default function KTrackPanel(props) {
 
     const classes = useStyles();
 
+    const buttonVariant = (() => {
+        // No selected instruments => grey
+        if(props.selectedInstruments.length === 0) return 'secondary';
+        // Gets the selected instruments objects
+        const selected = props.instruments.filter(i => props.selectedInstruments.includes(i.name));
+        // Errors => red
+        if(selected.some(i => i.errors.length > 0)) return 'danger';
+        // Warnings => yellow
+        if(selected.some(i => i.warnings.length > 0)) return 'warning';
+        // Nothing => green
+        return 'success';
+    })();
+
     return (
         <Grid
             container
@@ -41,18 +54,18 @@ export default function KTrackPanel(props) {
             <Grid item>
                 <Dropdown as={ButtonGroup}>
                     {/* Dropdown title */}
-                    <Button variant={props.selectedInstruments.length > 0 ? 'danger' : 'secondary'}>
+                    <Button variant={buttonVariant}>
                         {props.selectedInstruments.join(', ') || 'Select an instrument'}
                     </Button>
-                    <Dropdown.Toggle variant={props.selectedInstruments.length > 0 ? 'danger' : 'secondary'}/>
+                    <Dropdown.Toggle variant={buttonVariant}/>
                     {/* Dropdown buttons */}
                     <Dropdown.Menu>
                         {
                             props.instruments.map(instrument =>
                                 <Dropdown.Item
                                     as={KInstrument}
-                                    errors={instrument.errors}
-                                    warnings={instrument.warnings}
+                                    errors={instrument.errors.map(e => e.message)}
+                                    warnings={instrument.warnings.map(w => w.message)}
                                     active={props.selectedInstruments.includes(instrument.name)}
                                     onSelect={instname => {
                                         let res = props.selectedInstruments.slice();

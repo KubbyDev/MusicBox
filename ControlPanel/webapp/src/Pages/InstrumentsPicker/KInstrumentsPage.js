@@ -14,8 +14,8 @@ export default function KInstrumentsPage(props) {
     const instrumentsForTrack = (track) => {
         return props.instruments.map(inst => ({
             name: inst.name,
-            warnings: inst.warnings.filter(w => w.track === track).map(w => w.message),
-            errors: inst.errors.filter(e => e.track === track).map(e => e.message)
+            warnings: inst.warnings.filter(w => w.track === track),
+            errors: inst.errors.filter(e => e.track === track),
         }));
     };
 
