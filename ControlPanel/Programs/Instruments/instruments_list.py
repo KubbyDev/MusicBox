@@ -1,12 +1,6 @@
 import threading
-from Programs.NotesToInstrument.Instruments.drum import Drum
-from Programs.NotesToInstrument.Instruments.harp import Harp
-from Programs.NotesToInstrument.Instruments.stepper import Stepper
-from Programs.NotesToInstrument.Instruments.tesla import Tesla
-from Programs.NotesToInstrument.Instruments.whistle import Whistle
-from Programs import tools
-from Programs.JobManager import main as jobmanager
-
+from Programs.Instruments.Instruments.stepper import Stepper
+from Programs import tools, jobmanager
 
 # List of available instruments
 _instruments = [Stepper(index=1), Stepper(index=2), Stepper(index=3)]
@@ -23,7 +17,7 @@ def _compute_instrument(results, index, instrument, tracks):
 
 # Computes a list that contains the instruments
 # and the list of errors and warnings for each instrument
-def _instruments_computation(results, progress):
+def _instruments_computation(results, progress, args):
     tracks = jobmanager.get_results('notes')['tracks']
     threads = []
     # Starts one thread for each instrument
@@ -36,6 +30,7 @@ def _instruments_computation(results, progress):
             tracks
         ))
         threads.append(thread)
+    # Starts the threads when the results list is fully formed to avoid race condition
     for t in threads: t.start()
     # Waits for all the threads to terminate
     tools.wait_for_threads(threads)
@@ -51,5 +46,5 @@ def start_instruments_computation():
             progress=None,
         )
     except Exception as e:
-        return str(list(e.args)), 500
+        return str(e.args), 500
     return 'Started instruments computation'

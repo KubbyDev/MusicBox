@@ -27,15 +27,20 @@ export default function KTrackTools(props) {
     // Apply button
     const apply = () => {
 
-        const args = tools.filter(t => t.shouldSend()).map(t => ({
+        const jobs = tools.filter(t => t.shouldSend()).map(t => ({
             args: t.args,
             id: t.id,
         }));
-        if(args.length === 0) return;
+        if(jobs.length === 0) return;
 
         fetch('/api/process', {
             method: 'post',
-            body: args,
+            body: JSON.stringify({
+                jobs: jobs,
+                selectedTracks: props.selectedTracks
+                    .filter(trackSelection => trackSelection[0])
+                    .map((trackSelection, index) => index),
+            }),
         })
             .then(() => {
                 history.push('/');
@@ -43,11 +48,6 @@ export default function KTrackTools(props) {
             })
             .catch(console.error);
     };
-
-    const test_______testing_____temporary__should_not_be_there_octavetool = () => {
-        tools[0].setArgs(tools[0].args +1);
-        console.log(tools[0].args);
-    }
 
     return (
         <Grid
@@ -58,7 +58,7 @@ export default function KTrackTools(props) {
                 <Dropdown>
                     <Dropdown.Toggle variant='secondary'>Track Tools</Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Button onClick={test_______testing_____temporary__should_not_be_there_octavetool}>Btn</Button>
+                        <Button onClick={() => {tools[0].setArgs(tools[0].args +1)}}>Btn</Button>
                     </Dropdown.Menu>
                 </Dropdown>
             </Grid>

@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, jsonify, request
-from Programs.MidiToNotes import main as miditonotes
-from Programs.NotesToInstrument import main as notestoinstrument
-from Programs.JobManager import main as jobmanager
+from Programs.Notes import from_midi
+from Programs.Notes import processing
+from Programs import jobmanager
 from werkzeug import serving
 
 # Initialisation --------------------------------------------------------------
@@ -47,7 +47,11 @@ def musicfile():
     except:
         return 'Error while updating the musicfile', 500
     # Launches the midi to notes conversion
-    return miditonotes.start_musicfile_conversion()
+    return from_midi.start_musicfile_conversion()
+
+@app.route('/api/process', methods=['POST'])
+def process():
+    return processing.start_processing(request.get_json(force=True))
 
 @app.route('/api/notes')
 def notes():

@@ -140,11 +140,3 @@ def process_stops(track, stopLength=10):
     # Adds the last note
     res.append((current[0], current[1], current[2]))
     return res
-
-
-# Merges two list of notes (start, end, pitch). Makes sure the notes are ordered by starting time
-def merge(tracks):
-    sl = SortedList(key=lambda n: n[0]) # Sorts by start time
-    for track in tracks:
-        sl.update(track)
-    return sl[:]

@@ -1,9 +1,5 @@
-from Programs.NotesToInstrument.instrument import Instrument
-from Programs.NotesToInstrument.Tools import \
-    requirements as reqTools, \
-    generation as genTools, \
-    transfer as trTools
-
+from Programs.Instruments.Instruments.instrument import Instrument
+from Programs.Instruments.Tools import requirements as reqTools
 
 _min_pitch = 57
 _max_pitch = 84

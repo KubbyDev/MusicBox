@@ -1,6 +1,7 @@
 import threading
 import Programs.tools as tools
 import os
+import ast
 
 
 # Static values
@@ -58,41 +59,39 @@ def launch_job(main,
         workingthread.start()
         # Waits for the job to finish
         tools.wait_for_threads([workingthread], 10)
-        # Saves the results and the last progress
-        with open('ServerStorage/' + name + '/Results', 'w+') as file:
-            file.write(str(_results))
-        with open('ServerStorage/' + name + '/Progress', 'w+') as file:
-            file.write(str(_progress_function(_progress) if progress else _progress_done))
         # Runs the post process function
         if postprocess is not None:
             _results = postprocess(_results)
+        # Saves the results and the last progress
+        with open('ServerStorage/' + name + '-Results', 'w+') as file:
+            file.write(str(_results))
+        with open('ServerStorage/' + name + '-Progress', 'w+') as file:
+            file.write(str(_progress_function(_progress) if progress else _progress_done))
         # Stops the job and calls the done function
         _working = False
         if done is not None: done()
-    threading.Thread(target=control_function()).start()
+    threading.Thread(target=control_function).start()
 
 
 # Returns the return value of the progress function or its last return value
-# The return value of this function is always the string representation of the data
 def get_progress(job_name='Job'):
     # If the queried job is currently running, calls the function directly
-    if _working and _job_name == job_name: return str(_progress_function(_progress))
+    if _working and _job_name == job_name: return _progress_function(_progress)
     # If it is another job, returns the last progress of the queried job if available
-    if os.path.isfile('ServerStorage/'+job_name+'/Progress'):
-        with open('ServerStorage/'+job_name+'/Progress', 'r') as file:
-            return file.read()
+    if os.path.isfile('ServerStorage/'+job_name+'-Progress'):
+        with open('ServerStorage/'+job_name+'-Progress', 'r') as file:
+            return ast.literal_eval(file.read())
     # If it is not available, throws an error
     else: raise Exception('Unknown job')
 
 
 # Returns the current value of the results array
-# The return value of this function is always the string representation of the data
 def get_results(job_name='Job'):
     # If the queried job is currently running, returns the results directly
-    if _working and _job_name == job_name: return str(_results)
+    if _working and _job_name == job_name: return _results
     # If it is another job, returns the results of the queried job if available
-    if os.path.isfile('ServerStorage/'+job_name+'/Results'):
-        with open('ServerStorage/'+job_name+'/Results', 'r') as file:
-            return file.read()
+    if os.path.isfile('ServerStorage/'+job_name+'-Results'):
+        with open('ServerStorage/'+job_name+'-Results', 'r') as file:
+            return ast.literal_eval(file.read())
     # If it is not available, throws an error
     else: raise Exception('Unknown job')

@@ -1,9 +1,9 @@
 import mido
 import threading
-from Programs import tools
-import Programs.MidiToNotes.track_tools as track_tools
-from Programs.NotesToInstrument import main as notestoinstrument
-from Programs.JobManager import main as jobmanager
+from Programs import tools as programtools, jobmanager
+import Programs.Notes.Tools.translation as translation
+import Programs.Notes.Tools.tools as tools
+from Programs.Instruments import instruments_list
 
 
 def get_tempo(midifile):
@@ -26,18 +26,18 @@ def get_tempo(midifile):
 # is a dictionnary with information about the note
 def _to_notes(miditrack, results, index, tpb, tempo):
     # Converts the midi events to a more usable list of event
-    events = track_tools.preprocess(miditrack, tpb, tempo)
+    events = translation.preprocess(miditrack, tpb, tempo)
     # Does some cleaning with overlapping notes
-    track_tools.clean_overlapping(events)
+    translation.clean_overlapping(events)
     # Converts the events list to a chunk list with notes in each chunk
-    chunks = track_tools.to_chunks(events)
+    chunks = translation.to_chunks(events)
     # Separates the chunk list into multiple tracks, one for the
     # main notes and the others for the harmonics
-    root, harmonics = track_tools.separate_chords(chunks)
+    root, harmonics = translation.separate_chords(chunks)
     tracks = [root] + harmonics
     for i in range(len(tracks)):
         # Adds stops and combines some notes
-        resultTrack = track_tools.process_stops(tracks[i])
+        resultTrack = translation.process_stops(tracks[i])
         # Computes the highest and lowest pitch, and the total length
         # Converts the notes to dictionnaries
         notes = []
@@ -73,20 +73,10 @@ def _convert(results, progress, file):
             get_tempo(file),
         ))
         threads.append(t)
+    # Starts the threads when the results list is fully formed to avoid race condition
     for t in threads: t.start()
     # Waits for the threads to terminate
-    tools.wait_for_threads(threads)
-
-
-def _post_process(results):
-    total_length = 0
-    tracks = []
-    for thread in results:
-        for track in thread:
-            length = track.pop('length')
-            if length > total_length: total_length = length
-            tracks.append(track)
-    return {'tracks': tracks, 'totalLength': total_length}
+    programtools.wait_for_threads(threads)
 
 
 # Starts the conversion of all the tracks in the
@@ -99,9 +89,9 @@ def start_musicfile_conversion():
             args=file,
             name='notes',
             progress=None,
-            postprocess=_post_process,
-            done=notestoinstrument.start_instruments_computation
+            postprocess=tools.post_process,
+            done=instruments_list.start_instruments_computation
         )
     except Exception as e:
-        return str(list(e.args)), 500
+        return str(e.args), 500
     return 'Started converting musicfile'
