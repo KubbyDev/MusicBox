@@ -26,22 +26,22 @@ export default function KHomePage() {
             className={classes.maingrid}
         >
             {
-                [buttons.slice(0, 3), buttons.slice(3, 6)].map(row => {
+                [buttons.slice(0, 3), buttons.slice(3, 6)].map((row, index) => {
                     if (!row)
                         return (<></>);
                     return (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} key={index}>
                             <Grid
                                 container
                                 direction='row'
                                 className={classes.rowgrid}
                             >
                                 {
-                                    row.map(button => {
+                                    row.map((button, index2) => {
                                         if (!button)
                                             return (<></>);
                                         return (
-                                            <Grid item xs={4}>
+                                            <Grid item xs={4} key={index2}>
                                                 <Button
                                                     title={button.name}
                                                     onClick={() => handleClick(button.destination)}

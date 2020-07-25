@@ -30,7 +30,7 @@ export default function KTrack(props) {
             alignItems='center'
             spacing={1}
         >
-            <Grid item xs={2}>
+            <Grid item xs={3}>
                 <KTrackPanel
                     name={props.track.name}
                     instruments={props.instruments}
@@ -40,7 +40,7 @@ export default function KTrack(props) {
                     setSelected={props.setSelected}
                 />
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={9}>
                 <KPartition
                     track={props.track}
                     totalLength={props.totalLength}

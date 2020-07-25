@@ -61,8 +61,9 @@ export default function KTrackPanel(props) {
                     {/* Dropdown buttons */}
                     <Dropdown.Menu>
                         {
-                            props.instruments.map(instrument =>
+                            props.instruments.map((instrument, index) =>
                                 <Dropdown.Item
+                                    key={index}
                                     as={KInstrument}
                                     errors={instrument.errors.map(e => e.message)}
                                     warnings={instrument.warnings.map(w => w.message)}

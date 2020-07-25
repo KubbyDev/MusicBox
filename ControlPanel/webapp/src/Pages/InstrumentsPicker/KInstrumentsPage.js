@@ -3,6 +3,7 @@ import KTrack from "./KTrack";
 import {Grid, Button} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { playMelody, stopMelody } from "../../MelodyPlayer";
+import KTrackTools from "./KTrackTools";
 
 export default function KInstrumentsPage(props) {
 
@@ -100,6 +101,12 @@ export default function KInstrumentsPage(props) {
                     </Grid>
                 </Grid>
                 <Grid item xs={4}>
+                    <KTrackTools
+                        tracks={props.tracks}
+                        selectedTracks={selectedTracks}
+                    />
+                </Grid>
+                <Grid item xs={4}>
                     <Grid
                         container
                         alignItems='center'
@@ -126,7 +133,7 @@ export default function KInstrumentsPage(props) {
                 className={classes.trackslist}
             >
                 {props.tracks.map((track, index) =>
-                    <Grid item xs={12} className={classes.track}>
+                    <Grid item xs={12} className={classes.track} key={index}>
                         <KTrack
                             track={track}
                             totalLength={props.totalLength}

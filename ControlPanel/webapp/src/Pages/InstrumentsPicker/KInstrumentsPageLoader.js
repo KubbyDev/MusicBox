@@ -68,7 +68,11 @@ export default function KInstrumentsPageLoader(props) {
             {
                 (notes === null || instruments === null)
                     ? loadingPage
-                    : <KInstrumentsPage tracks={notes.tracks} totalLength={notes.totalLength} instruments={instruments}/>
+                    : <KInstrumentsPage
+                        tracks={notes.tracks}
+                        totalLength={notes.totalLength}
+                        instruments={instruments}
+                    />
             }
         </>
     )

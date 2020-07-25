@@ -9,9 +9,7 @@ export default function KUploadPage(props) {
         fetch('/api/musicfile', {
             method: 'post',
             body: file,
-        })
-            .then(console.log)
-            .catch(console.error);
+        }).catch(console.error);
     }
 
     return (
