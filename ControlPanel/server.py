@@ -1,6 +1,7 @@
 from flask import Flask, send_from_directory, jsonify, request
 from Programs.MidiToNotes import main as miditonotes
 from Programs.NotesToInstrument import main as notestoinstrument
+from Programs.JobManager import main as jobmanager
 from werkzeug import serving
 
 # Initialisation --------------------------------------------------------------
@@ -40,7 +41,7 @@ def send_file(path):
 def musicfile():
     # Writes the music file to a temporary location in the server storage
     try:
-        file = open('ServerStorage/musicfile', 'wb+')
+        file = open('ServerStorage/MusicFile', 'wb+')
         file.write(request.data)
         file.close()
     except:
@@ -50,19 +51,19 @@ def musicfile():
 
 @app.route('/api/notes')
 def notes():
-    return jsonify(miditonotes.conversion_results)
+    return jsonify(jobmanager.get_results('notes'))
 
 @app.route('/api/notes/progress')
 def notes_progress():
-    return jsonify(miditonotes.get_progression())
+    return jsonify(jobmanager.get_progress('notes'))
 
 @app.route('/api/instruments')
 def instruments():
-    return jsonify(notestoinstrument.instruments_results)
+    return jsonify(jobmanager.get_results('instruments'))
 
 @app.route('/api/instruments/progress')
 def instruments_progress():
-    return jsonify(notestoinstrument.get_progression())
+    return jsonify(jobmanager.get_progress('instruments'))
 
 # -----------------------------------------------------------------------------
 

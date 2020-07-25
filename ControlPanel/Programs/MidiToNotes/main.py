@@ -3,12 +3,7 @@ import threading
 from Programs import tools
 import Programs.MidiToNotes.track_tools as track_tools
 from Programs.NotesToInstrument import main as notestoinstrument
-
-
-# True until the conversion is done
-_working = False
-# Stores the last conversion results
-conversion_results = {'tracks':[],'totalLength':0}
+from Programs.JobManager import main as jobmanager
 
 
 def get_tempo(midifile):
@@ -65,11 +60,8 @@ def _to_notes(miditrack, results, index, tpb, tempo):
 
 
 # Converts all the tracks in the musicfile in ServerStorage
-def _convert(file):
-    global _working
-    global conversion_results
+def _convert(results, progress, file):
     # Starts a thread for the conversion of each track
-    results = []
     threads = []
     for i in range(1, len(file.tracks)):
         results.append([])
@@ -78,13 +70,15 @@ def _convert(file):
             results,
             i-1,
             file.ticks_per_beat,
-            get_tempo(file)
+            get_tempo(file),
         ))
-        t.start()
         threads.append(t)
+    for t in threads: t.start()
     # Waits for the threads to terminate
     tools.wait_for_threads(threads)
-    # Post processes the results
+
+
+def _post_process(results):
     total_length = 0
     tracks = []
     for thread in results:
@@ -92,29 +86,22 @@ def _convert(file):
             length = track.pop('length')
             if length > total_length: total_length = length
             tracks.append(track)
-    conversion_results = {'tracks':tracks,'totalLength':total_length}
-    _working = False
-    # Starts the requirements computation
-    notestoinstrument.start_instruments_computation()
+    return {'tracks': tracks, 'totalLength': total_length}
 
 
 # Starts the conversion of all the tracks in the
 # musicfile in ServerStorage (asynchronously)
 def start_musicfile_conversion():
-    global _working
-    if _working:
-        return 'A conversion is already running', 500
     try:
-        _working = True
         file = mido.MidiFile('ServerStorage/musicfile')
-        threading.Thread(target=_convert, args=(file,)).start()
-    except:
-        _working = False
-        return "Couldn't open musicfile or start thread", 500
+        jobmanager.launch_job(
+            main=_convert,
+            args=file,
+            name='notes',
+            progress=None,
+            postprocess=_post_process,
+            done=notestoinstrument.start_instruments_computation
+        )
+    except Exception as e:
+        return str(list(e.args)), 500
     return 'Started converting musicfile'
-
-
-# Gives a rough conversion progression percentage and a status message
-def get_progression():
-    if _working: return {'percent': 50, 'status':'Converting...'}
-    else: return {'percent': 100, 'status':'Done'}

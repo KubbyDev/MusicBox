@@ -5,15 +5,11 @@ from Programs.NotesToInstrument.Instruments.stepper import Stepper
 from Programs.NotesToInstrument.Instruments.tesla import Tesla
 from Programs.NotesToInstrument.Instruments.whistle import Whistle
 from Programs import tools
-from Programs.MidiToNotes import main as miditonotes
+from Programs.JobManager import main as jobmanager
 
 
 # List of available instruments
 _instruments = [Stepper(index=1), Stepper(index=2), Stepper(index=3)]
-# True until the instruments computation is done
-_working = False
-# Stores the last instruments computation results
-instruments_results = []
 
 
 # Computes the requirements for all the tracks for this instrument
@@ -27,10 +23,8 @@ def _compute_instrument(results, index, instrument, tracks):
 
 # Computes a list that contains the instruments
 # and the list of errors and warnings for each instrument
-def _instruments_computation():
-    global instruments_results
-    global _working
-    results = []
+def _instruments_computation(results, progress):
+    tracks = jobmanager.get_results('notes')['tracks']
     threads = []
     # Starts one thread for each instrument
     for i in range(len(_instruments)):
@@ -39,28 +33,23 @@ def _instruments_computation():
             results,
             i,
             _instruments[i],
-            miditonotes.conversion_results['tracks']
+            tracks
         ))
-        thread.start()
         threads.append(thread)
+    for t in threads: t.start()
     # Waits for all the threads to terminate
     tools.wait_for_threads(threads)
-    # Finishes the calculation
-    instruments_results = results
-    _working = False
+
 
 # Starts the computation of a list that contains the instruments
 # and the list of errors and warnings for each instrument
 def start_instruments_computation():
-    global _working
-    if _working:
-        return 'A computation is already running', 500
-    _working = True
-    threading.Thread(target=_instruments_computation).start()
+    try:
+        jobmanager.launch_job(
+            main=_instruments_computation,
+            name='instruments',
+            progress=None,
+        )
+    except Exception as e:
+        return str(list(e.args)), 500
     return 'Started instruments computation'
-
-
-# Gives a rough progression percentage and a status message
-def get_progression():
-    if _working: return {'percent': 50, 'status':'Computing...'}
-    else: return {'percent': 100, 'status':'Done'}
