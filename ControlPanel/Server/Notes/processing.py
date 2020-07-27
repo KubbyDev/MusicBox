@@ -1,7 +1,8 @@
 import threading
-from Programs import jobmanager, tools as programtools
-from Programs.Notes.Tools import tools
-from Programs.Notes.Tools import preprocess
+from Server import jobmanager, tools as programtools
+from Server.Notes.Tools import tools
+from Server.Notes.Tools import preprocess
+from Server.Instruments import instruments_list
 
 
 _job_functions = [
@@ -49,7 +50,8 @@ def start_processing(jobs):
             args=(jobmanager.get_results('notes'), jobs['jobs'], jobs['selectedTracks']),
             name='notes',
             progress=None,
-            postprocess=tools.post_process
+            postprocess=tools.post_process,
+            done=instruments_list.start_instruments_computation
         )
     except Exception as e:
         return str(e.args), 500

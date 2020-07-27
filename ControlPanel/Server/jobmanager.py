@@ -1,7 +1,9 @@
 import threading
-import Programs.tools as tools
 import os
 import ast
+
+from Server import tools
+import config
 
 
 # Static values
@@ -63,9 +65,9 @@ def launch_job(main,
         if postprocess is not None:
             _results = postprocess(_results)
         # Saves the results and the last progress
-        with open('ServerStorage/' + name + '-Results', 'w+') as file:
+        with open(config.Storage.cache_folder + name + '-Results', 'w+') as file:
             file.write(str(_results))
-        with open('ServerStorage/' + name + '-Progress', 'w+') as file:
+        with open(config.Storage.cache_folder + name + '-Progress', 'w+') as file:
             file.write(str(_progress_function(_progress) if progress else _progress_done))
         # Stops the job and calls the done function
         _working = False
@@ -78,8 +80,8 @@ def get_progress(job_name='Job'):
     # If the queried job is currently running, calls the function directly
     if _working and _job_name == job_name: return _progress_function(_progress)
     # If it is another job, returns the last progress of the queried job if available
-    if os.path.isfile('ServerStorage/'+job_name+'-Progress'):
-        with open('ServerStorage/'+job_name+'-Progress', 'r') as file:
+    if os.path.isfile(config.Storage.cache_folder+job_name+'-Progress'):
+        with open(config.Storage.cache_folder+job_name+'-Progress', 'r') as file:
             return ast.literal_eval(file.read())
     # If it is not available, throws an error
     else: raise Exception('Unknown job')
@@ -90,8 +92,8 @@ def get_results(job_name='Job'):
     # If the queried job is currently running, returns the results directly
     if _working and _job_name == job_name: return _results
     # If it is another job, returns the results of the queried job if available
-    if os.path.isfile('ServerStorage/'+job_name+'-Results'):
-        with open('ServerStorage/'+job_name+'-Results', 'r') as file:
+    if os.path.isfile(config.Storage.cache_folder+job_name+'-Results'):
+        with open(config.Storage.cache_folder+job_name+'-Results', 'r') as file:
             return ast.literal_eval(file.read())
     # If it is not available, throws an error
     else: raise Exception('Unknown job')

@@ -1,4 +1,7 @@
-
 # Temporary files
-__pycache__
+__pycache__/
 *.blend1
+.idea/
+
+# Files used to tell git to keep some folders (empty folders)
+!**/.keep

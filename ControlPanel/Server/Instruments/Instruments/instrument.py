@@ -12,11 +12,10 @@ class Instrument:
         :return: a Requirements object containing the list of warnings and errors
         """
         raise NotImplementedError()
-    def generate(self, notes, requirements):
+    def generate(self, notes):
         """
         Generates an object in the right format so that the instrument can directly use it.
 
-        :param requirements: the preprocessing that needs to be done
         :param notes: a preprocessed list of notes
         :return: an object that can be sent directly to the instrument
         """

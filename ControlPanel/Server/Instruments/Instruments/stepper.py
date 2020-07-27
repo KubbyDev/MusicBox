@@ -1,5 +1,5 @@
-from Programs.Instruments.Instruments.instrument import Instrument
-from Programs.Instruments.Tools import requirements as reqTools
+from Server.Instruments.Instruments.instrument import Instrument
+from Server.Instruments.Tools import requirements as reqTools
 
 _min_pitch = 57
 _max_pitch = 84
@@ -12,7 +12,7 @@ class Stepper(Instrument):
             reqTools.notes_range(_min_pitch, _max_pitch)
         ])
         return reqs
-    def generate(self, notes, requirements):
+    def generate(self, notes):
         pass
     def transfer(self, data):
         pass

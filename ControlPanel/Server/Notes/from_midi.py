@@ -1,9 +1,10 @@
 import mido
 import threading
-from Programs import tools as programtools, jobmanager
-import Programs.Notes.Tools.translation as translation
-import Programs.Notes.Tools.tools as tools
-from Programs.Instruments import instruments_list
+
+from Server import tools as programtools, jobmanager
+from Server.Notes.Tools import tools, translation
+from Server.Instruments import instruments_list
+import config
 
 
 def get_tempo(midifile):
@@ -83,7 +84,7 @@ def _convert(results, progress, file):
 # musicfile in ServerStorage (asynchronously)
 def start_musicfile_conversion():
     try:
-        file = mido.MidiFile('ServerStorage/musicfile')
+        file = mido.MidiFile(config.Storage.cache_folder+'musicfile')
         jobmanager.launch_job(
             main=_convert,
             args=file,

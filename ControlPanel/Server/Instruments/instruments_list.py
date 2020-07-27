@@ -1,6 +1,6 @@
 import threading
-from Programs.Instruments.Instruments.stepper import Stepper
-from Programs import tools, jobmanager
+from Server.Instruments.Instruments.stepper import Stepper
+from Server import tools, jobmanager
 
 # List of available instruments
 _instruments = [Stepper(index=1), Stepper(index=2), Stepper(index=3)]
