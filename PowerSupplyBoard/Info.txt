@@ -46,4 +46,10 @@ Current (my measures, 5V): 250mA (no load), 700mA (stall)
 
 Important: Servo GND and logic GND must be connected
 
+Laser diodes ------------------------------------------------------------------
 
+Refs:
+CESFONJER 650nm 5mW: https://www.amazon.fr/WPERSUVV-Laser-diode-T%C3%AAte-Rouge/dp/B07RM3RWSF
+
+Voltage: 5V
+Current: 50mA (should be determined experimentally)

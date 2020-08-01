@@ -1,0 +1,2 @@
+No need for a resistor, the laser diodes can be powered directly from 5V (there is an integrated resistor of 91 Ohm)
+The lens is focusable
