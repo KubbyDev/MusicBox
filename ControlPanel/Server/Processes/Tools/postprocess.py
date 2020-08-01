@@ -1,7 +1,7 @@
 
 # Takes a list of lists of track dicts containing name, highest, lowest, length and notes properties
 # And combines them in a single dict ready to be sent back to the client
-def post_process(results):
+def notes(results):
     total_length = 0
     tracks = []
     for thread in results:

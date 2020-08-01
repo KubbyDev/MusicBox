@@ -1,3 +1,9 @@
+from Server.Instruments.stepper import Stepper
+
+
+# List of available instruments
+instruments_list = [Stepper(index=1), Stepper(index=2), Stepper(index=3)]
+
 
 class Instrument:
     def __init__(self, name=None, index=None):
@@ -26,4 +32,10 @@ class Instrument:
         """
         raise NotImplementedError()
     def get_code(self, melody):
+        """
+        Returns the c++ code for this instrument for the given melody. Can be put
+        directly in an instrument specific arduino sketch.
+
+        :param melody: The name of the desired melody
+        """
         raise NotImplementedError()

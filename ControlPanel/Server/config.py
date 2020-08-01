@@ -11,8 +11,10 @@ class API:
     silent_endpoints = ['/api/notes/progress', '/api/instruments/progress']
 
 class Storage:
-    _storage_folder = 'ServerStorage'
+    _storage_folder = 'Server/Storage'
     _cache_folder = 'cache'
+    _melodies_folder = 'melodies'
 
     storage_location = _storage_folder + '/'
     cache_folder = join(_storage_folder, _cache_folder) + '/'
+    melodies_folder = join(_storage_folder, _melodies_folder) + '/'

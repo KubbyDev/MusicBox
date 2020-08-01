@@ -50,7 +50,7 @@ export default function KTrackPanel(props) {
                     </Grid>
                 </Grid>
             </Grid>
-            {/* Instruments selection dropdown --------------------------------------------------------------------- */}
+            {/* Processes selection dropdown --------------------------------------------------------------------- */}
             <Grid item>
                 <Dropdown as={ButtonGroup}>
                     {/* Dropdown title */}

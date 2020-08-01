@@ -1,5 +1,5 @@
-from Server.Instruments.Instruments.instrument import Instrument
-from Server.Instruments.Tools import requirements as reqTools
+from Server.Instruments.instrument import Instrument
+from Server.Processes.Tools import requirements as reqTools
 
 
 class Drum(Instrument):

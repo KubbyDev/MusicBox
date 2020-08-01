@@ -2,9 +2,10 @@ import os
 from flask import Flask, send_from_directory, jsonify, request
 from werkzeug import serving
 
-from Server.Notes import from_midi, processing
-from Server.Instruments import instruments_list, generation
-from Server import jobmanager, config
+from Server.Processes import generation, processing, from_midi
+from Server.Processes.JobManager import jobmanager
+from Server.Instruments.instrument import instruments_list
+from Server import config
 
 # Initialisation --------------------------------------------------------------
 
@@ -84,7 +85,7 @@ def generate():
 
 @app.route('/api/code/<melody>/<instrument>') # TODO: Security
 def get_code(melody, instrument):
-    for inst in instruments_list.available:
+    for inst in instruments_list:
         if inst.name == instrument:
             res = inst.get_code(melody)
             if not isinstance(res, tuple): return jsonify(res)

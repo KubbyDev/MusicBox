@@ -1,7 +1,7 @@
-from Server.Instruments.Instruments.instrument import Instrument
+from Server.Instruments.instrument import Instrument
 
 
-class Whistle(Instrument):
+class Tesla(Instrument):
     def requirements(self, track):
         pass
     def generate(self, track):

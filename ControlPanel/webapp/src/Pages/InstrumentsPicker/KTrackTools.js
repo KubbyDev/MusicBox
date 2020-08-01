@@ -58,7 +58,48 @@ export default function KTrackTools(props) {
                 <Dropdown>
                     <Dropdown.Toggle variant='secondary'>Track Tools</Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Button onClick={() => {tools[0].setArgs(tools[0].args +1)}}>Btn</Button>
+                        <Grid
+                            container
+                            direction='column'
+                        >
+                            <Grid item>
+                                {/* Octave shift ------------------------------------------------------------------- */}
+                                <Grid container
+                                    direction='row'
+                                    alignItems='center'
+                                    justify='space-around'
+                                    style={{width:400}}
+                                >
+                                    <Grid item>
+                                        <p>Octave shift</p>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Grid container
+                                              direction='row'
+                                              alignItems='center'
+                                              justify='space-between'
+                                              style={{width:'100%'}}
+                                        >
+                                            <Grid item>
+                                                <Button onClick={() => {tools[0].setArgs(tools[0].args -1)}}>DOWN</Button>
+                                            </Grid>
+                                            <Grid item>
+                                                {tools[0].args}
+                                            </Grid>
+                                            <Grid item>
+                                                <Button onClick={() => {tools[0].setArgs(tools[0].args +1)}}>UP</Button>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item>
+                                <Dropdown.Divider/>
+                            </Grid>
+                            <Grid item>
+                                <p>Second tool</p>
+                            </Grid>
+                        </Grid>
                     </Dropdown.Menu>
                 </Dropdown>
             </Grid>

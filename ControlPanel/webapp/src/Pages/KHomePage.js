@@ -10,7 +10,7 @@ export default function KHomePage() {
     const history = useHistory();
 
     const buttons = [
-        {name: 'Instruments\nPicker', destination:'/instrumentpicker', color: 'aqua'},
+        {name: 'Processes\nPicker', destination:'/instrumentpicker', color: 'aqua'},
         {name: 'Upload\nFile', destination:'/upload', color: 'magenta'},
     ]
 

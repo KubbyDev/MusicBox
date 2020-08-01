@@ -2,9 +2,9 @@ import os
 import ast
 
 from Server import config
-from Server.Instruments.Instruments.instrument import Instrument
-from Server.Instruments.Tools import requirements as reqTools
-from Server.Instruments.Tools import generation as genTools
+from Server.Instruments.instrument import Instrument
+from Server.Processes.Tools import requirements as reqTools
+from Server.Processes.Tools import generation as genTools
 
 
 _min_pitch = 57
