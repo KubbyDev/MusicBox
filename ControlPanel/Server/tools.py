@@ -1,4 +1,5 @@
 import time
+from music21.pitch import Pitch
 
 
 # Waits until all the threads are terminated
@@ -12,3 +13,7 @@ def wait_for_threads(threads, intervalMs=100):
         if done:
             break
         time.sleep(intervalMs/1000)
+
+
+def midi_to_name(midi):
+    return Pitch(midi).nameWithOctave

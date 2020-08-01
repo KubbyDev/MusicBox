@@ -1,10 +1,9 @@
 import mido
 import threading
 
-from Server import tools as programtools, jobmanager
+from Server import tools as programtools, jobmanager, config
 from Server.Notes.Tools import tools, translation
 from Server.Instruments import instruments_list
-import config
 
 
 def get_tempo(midifile):
@@ -23,8 +22,8 @@ def get_tempo(midifile):
 # Results list:
 # Each index corresponds to a thread during a conversion. Each thread
 # will place in its spot a list of tracks. Each track is a dictionnary
-# containing information about the track and a list of notes. Each note
-# is a dictionnary with information about the note
+# containing information about the track and a list of note dictionnaries
+# with start milliseconds, end milliseconds and midi pitch
 def _to_notes(miditrack, results, index, tpb, tempo):
     # Converts the midi events to a more usable list of event
     events = translation.preprocess(miditrack, tpb, tempo)
@@ -45,11 +44,11 @@ def _to_notes(miditrack, results, index, tpb, tempo):
         highest = 0
         lowest = 10000
         length = 0
-        for note in resultTrack:
-            if note[1] > length: length = note[1] # Latest end
-            if note[2] > highest: highest = note[2] # Highest pitch
-            if note[2] < lowest: lowest = note[2] # Lowest pitch
-            notes.append({'start':note[0],'end':note[1],'pitch':note[2]})
+        for n in resultTrack:
+            if n[1] > length: length = n[1] # Latest end
+            if n[2] > highest: highest = n[2] # Highest pitch
+            if n[2] < lowest: lowest = n[2] # Lowest pitch
+            notes.append(note.Note(n[0], n[1], n[2]))
         # Saves the results
         results[index].append({
             'name': miditrack.name + str(i),
@@ -84,7 +83,7 @@ def _convert(results, progress, file):
 # musicfile in ServerStorage (asynchronously)
 def start_musicfile_conversion():
     try:
-        file = mido.MidiFile(config.Storage.cache_folder+'musicfile')
+        file = mido.MidiFile(config.Storage.cache_folder + 'musicfile')
         jobmanager.launch_job(
             main=_convert,
             args=file,

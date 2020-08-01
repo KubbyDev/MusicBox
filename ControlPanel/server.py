@@ -3,8 +3,8 @@ from flask import Flask, send_from_directory, jsonify, request
 from werkzeug import serving
 
 from Server.Notes import from_midi, processing
-from Server import jobmanager
-import config
+from Server.Instruments import instruments_list, generation
+from Server import jobmanager, config
 
 # Initialisation --------------------------------------------------------------
 
@@ -28,7 +28,7 @@ for page in config.WebApp.pages:
     )
 
 # Server storage folder structure
-for folder in [config.Storage.cache_folder]:
+for folder in [config.Storage.cache_folder, config.Storage.melodies_folder]:
     try: os.makedirs(folder)
     except: pass
 
@@ -39,6 +39,8 @@ def send_file(path):
     return send_from_directory('.', path)
 
 # API -------------------------------------------------------------------------
+
+# Notes generation
 
 @app.route('/api/musicfile', methods=['POST'])
 def musicfile():
@@ -56,6 +58,8 @@ def musicfile():
 def process():
     return processing.start_processing(request.get_json(force=True))
 
+# Getters
+
 @app.route('/api/notes')
 def notes():
     return jsonify(jobmanager.get_results('notes'))
@@ -71,6 +75,21 @@ def instruments():
 @app.route('/api/instruments/progress')
 def instruments_progress():
     return jsonify(jobmanager.get_progress('instruments'))
+
+# Generation and playing
+
+@app.route('/api/generate', methods=['POST'])
+def generate():
+    return generation.start(request.get_json(force=True))
+
+@app.route('/api/code/<melody>/<instrument>') # TODO: Security
+def get_code(melody, instrument):
+    for inst in instruments_list.available:
+        if inst.name == instrument:
+            res = inst.get_code(melody)
+            if not isinstance(res, tuple): return jsonify(res)
+            else: return jsonify(res[0]), res[1]
+    return jsonify("Instrument " + instrument + " not found"), 500
 
 # -----------------------------------------------------------------------------
 

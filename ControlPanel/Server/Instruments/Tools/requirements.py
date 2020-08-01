@@ -3,6 +3,7 @@ import math
 
 # Useful class to build a requirements dictionnary
 class Requirements:
+    # Creates a requirements object. Track is a full track dict from a notes generator
     def __init__(self, track):
         self.warnings, self.errors = [], []
         self.track = track

@@ -2,8 +2,9 @@ import threading
 from Server.Instruments.Instruments.stepper import Stepper
 from Server import tools, jobmanager
 
+
 # List of available instruments
-_instruments = [Stepper(index=1), Stepper(index=2), Stepper(index=3)]
+available = [Stepper(index=1), Stepper(index=2), Stepper(index=3)]
 
 
 # Computes the requirements for all the tracks for this instrument
@@ -21,12 +22,12 @@ def _instruments_computation(results, progress, args):
     tracks = jobmanager.get_results('notes')['tracks']
     threads = []
     # Starts one thread for each instrument
-    for i in range(len(_instruments)):
+    for i in range(len(available)):
         results.append([])
         thread = threading.Thread(target=_compute_instrument, args=(
             results,
             i,
-            _instruments[i],
+            available[i],
             tracks
         ))
         threads.append(thread)

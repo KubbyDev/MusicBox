@@ -1,10 +1,14 @@
 from Server.Instruments.Instruments.instrument import Instrument
+from Server.Instruments.Tools import requirements as reqTools
 
 
 class Drum(Instrument):
-    def requirements(self, notes):
+    def requirements(self, track):
+        reqs = reqTools.Requirements(track)
+        return reqs
+    def generate(self, track):
         pass
-    def generate(self, notes):
+    def upload(self):
         pass
-    def transfer(self, data):
+    def get_code(self, melody):
         pass
