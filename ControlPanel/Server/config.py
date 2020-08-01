@@ -4,7 +4,7 @@ class Server:
     port = 80
 
 class WebApp:
-    pages = ['', 'instrumentpicker', 'upload']
+    pages = ['', 'instrumentpicker', 'upload', 'melodies']
     static_folder = 'webapp/build'
 
 class API:

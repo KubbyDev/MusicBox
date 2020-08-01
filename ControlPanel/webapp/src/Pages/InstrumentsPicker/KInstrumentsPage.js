@@ -4,10 +4,12 @@ import {Grid, Button} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { playMelody, stopMelody } from "../../MelodyPlayer";
 import KTrackTools from "./KTrackTools";
+import {useHistory} from "react-router";
 
 export default function KInstrumentsPage(props) {
 
     const classes = useStyles();
+    const history = useHistory();
     const [playingMelodyB, setPlayingMelodyB] = React.useState(false);
     const [playingMelodyM, setPlayingMelodyM] = React.useState(false);
 
@@ -64,7 +66,32 @@ export default function KInstrumentsPage(props) {
     const handlePlayMusicbox = () => {
 
         setPlayingMelodyM( ! playingMelodyM);
-    }
+    };
+
+    const handleGenerate = () => {
+
+        let body = {};
+        // For each instrument
+        for(let instrument of props.instruments) {
+            let trackId = -1;
+            // Goes through all the tracks
+            for(let i = 0; i < props.tracks.length; i++) {
+                // If this track is not selected
+                if( ! selectedTracks[i][0]) continue;
+                // If this track has this instrument selected
+                if(selectedInstruments[i][0].includes(instrument.name)) {
+                    trackId = i;
+                    break;
+                }
+            }
+            if(trackId !== -1) // If a selected track selected this instrument
+                body[instrument.name] = trackId;
+        }
+
+        fetch('/api/generate/Melody', {method: 'post', body: JSON.stringify(body)})
+            .then(history.push('/melodies'))
+            .catch(console.error);
+    };
 
     return (
         <>
@@ -76,7 +103,7 @@ export default function KInstrumentsPage(props) {
                 alignItems='center'
                 className={classes.topToolbar}
             >
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <Grid
                         container
                         alignItems='center'
@@ -100,13 +127,13 @@ export default function KInstrumentsPage(props) {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <KTrackTools
                         tracks={props.tracks}
                         selectedTracks={selectedTracks}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <Grid
                         container
                         alignItems='center'
@@ -123,6 +150,11 @@ export default function KInstrumentsPage(props) {
                             </Button>
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid item>
+                    <Button className={classes.topToolbarButton} onClick={handleGenerate}>
+                        Generate
+                    </Button>
                 </Grid>
             </Grid>
             {/* Tracks --------------------------------------------------------------------------------------------- */}

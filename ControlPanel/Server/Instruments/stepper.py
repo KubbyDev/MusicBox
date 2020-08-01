@@ -21,7 +21,7 @@ class Stepper(Instrument):
     def generate(self, track):
         reqs = self.requirements(track)
         # If there is requirements to be satisfied
-        if reqs:
+        if not reqs.empty():
             # Hard fix requirements
             raise Exception('There are still requirements')
         # Generates notes and times
@@ -34,12 +34,8 @@ class Stepper(Instrument):
         with open(config.Storage.melodies_folder + melody, 'r') as file:
             data = ast.literal_eval(file.read())
         generated = data.get(self.name)
-        return "const PROGMEM uint16_t notes{}[] = {{\n" \
-               "    {}\n" \
-               "}};" \
-            .format(self.name, ','.join(map(lambda x: str(x), generated['notes']))) \
-             + "const PROGMEM uint32_t times{}[] = {{\n" \
-               "    {}\n" \
-               "}};" \
-            .format(self.name, ','.join(map(lambda x: str(x), generated['times'])))
+        return "const PROGMEM uint16_t notes{}[] = {{\n    {}\n}};\n" \
+            .format(self.name, ', '.join(map(lambda x: str(x), generated['notes']))) \
+             + "const PROGMEM uint32_t times{}[] = {{\n    {}\n}};\n" \
+            .format(self.name, ', '.join(map(lambda x: str(x), generated['times'])))
 

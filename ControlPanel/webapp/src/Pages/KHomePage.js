@@ -12,6 +12,7 @@ export default function KHomePage() {
     const buttons = [
         {name: 'Processes\nPicker', destination:'/instrumentpicker', color: 'aqua'},
         {name: 'Upload\nFile', destination:'/upload', color: 'magenta'},
+        {name: 'Melodies', destination:'/melodies', color: 'green'},
     ]
 
     const handleClick = (destination) => {

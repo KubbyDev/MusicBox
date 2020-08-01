@@ -1,8 +1,7 @@
 import threading
-import os
-import ast
 
-from Server import tools, config
+from Server import config, storage
+from Server.Processes.Tools import tools
 
 # Static values
 _default_progress_function = lambda pro: {'percent':50,'status':'In progress'}
@@ -34,7 +33,7 @@ def launch_job(main,
     :param name: name of the job. Can be used to refer to that job in the get_progress and get_results functions
     :param progress: a function that takes the progress list from the job_main and returns progress info.
     :param postprocess: a function that will be ran when the job has finished. Takes the results as a parameter
-    and returns the postprocessed version of the results.
+    and returns the postprocessed version of the results. If this function returns None, the results wont be saved
     :param done: a function that will be called when the job is done
     :return: Nothing. Can raise errors
     """
@@ -62,11 +61,14 @@ def launch_job(main,
         # Runs the post process function
         if postprocess is not None:
             _results = postprocess(_results)
-        # Saves the results and the last progress
-        with open(config.Storage.cache_folder + name + '-Results', 'w+') as file:
-            file.write(str(_results))
-        with open(config.Storage.cache_folder + name + '-Progress', 'w+') as file:
-            file.write(str(_progress_function(_progress) if progress else _progress_done))
+        # Saves the results
+        if _results:
+            storage.write(config.Storage.cache_folder + name + '-Results', _results)
+        # Saves the last progress
+        storage.write(
+            config.Storage.cache_folder + name + '-Progress',
+            _progress_function(_progress) if progress else _progress_done
+        )
         # Stops the job and calls the done function
         _working = False
         if done is not None: done()
@@ -78,9 +80,8 @@ def get_progress(job_name='Job'):
     # If the queried job is currently running, calls the function directly
     if _working and _job_name == job_name: return _progress_function(_progress)
     # If it is another job, returns the last progress of the queried job if available
-    if os.path.isfile(config.Storage.cache_folder + job_name + '-Progress'):
-        with open(config.Storage.cache_folder + job_name + '-Progress', 'r') as file:
-            return ast.literal_eval(file.read())
+    res = storage.read(config.Storage.cache_folder + job_name + '-Progress')
+    if res: return res
     # If it is not available, throws an error
     else: raise Exception('Unknown job')
 
@@ -90,8 +91,7 @@ def get_results(job_name='Job'):
     # If the queried job is currently running, returns the results directly
     if _working and _job_name == job_name: return _results
     # If it is another job, returns the results of the queried job if available
-    if os.path.isfile(config.Storage.cache_folder + job_name + '-Results'):
-        with open(config.Storage.cache_folder + job_name + '-Results', 'r') as file:
-            return ast.literal_eval(file.read())
+    res = storage.read(config.Storage.cache_folder + job_name + '-Results')
+    if res: return res
     # If it is not available, throws an error
     else: raise Exception('Unknown job')

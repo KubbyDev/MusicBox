@@ -24,6 +24,8 @@ class Requirements:
                 error['id'] = checkID
             for w in warnings: self.warnings.append(w)
             for e in errors: self.errors.append(e)
+    def empty(self):
+        return len(self.warnings) == len(self.errors) == 0
 
 
 # Checkers --------------------------------------------------------------------

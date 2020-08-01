@@ -1,7 +1,7 @@
 import threading
 from Server.Processes.Tools import tools
 from Server.Processes.JobManager import jobmanager
-from Server.Instruments.instrument import instruments_list
+from Server.Instruments.available import instruments_list
 
 
 # Computes the requirements for all the tracks for this instrument

@@ -4,7 +4,7 @@ from werkzeug import serving
 
 from Server.Processes import generation, processing, from_midi
 from Server.Processes.JobManager import jobmanager
-from Server.Instruments.instrument import instruments_list
+from Server.Instruments.available import instruments_list
 from Server import config
 
 # Initialisation --------------------------------------------------------------
@@ -79,9 +79,9 @@ def instruments_progress():
 
 # Generation and playing
 
-@app.route('/api/generate', methods=['POST'])
-def generate():
-    return generation.start(request.get_json(force=True))
+@app.route('/api/generate/<name>', methods=['POST'])
+def generate(name):
+    return generation.start(name, request.get_json(force=True))
 
 @app.route('/api/code/<melody>/<instrument>') # TODO: Security
 def get_code(melody, instrument):
