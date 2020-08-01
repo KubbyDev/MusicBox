@@ -1,6 +1,7 @@
 import threading
-from Server.Instruments import instruments_list
-from Server import tools, jobmanager
+from Server.Processes.JobManager import jobmanager
+from Server.Processes.Tools import tools
+from Server.Instruments.instrument import instruments_list
 
 
 def _generate_for_instrument(results, index, instrument, track):
@@ -11,9 +12,9 @@ def _generate(results, progress, settings):
     tracks = jobmanager.get_results('notes')['tracks']
     threads = []
     # Starts one thread for each selected instrument
-    for i in range(len(instruments_list.available)):
+    for i in range(len(instruments_list)):
         results.append([])
-        instrument = instruments_list.available[i]
+        instrument = instruments_list[i]
         # If the instrument hasn't been selected, does nothing
         if instrument.name in settings.key():
             thread = threading.Thread(target=_generate_for_instrument, args=(
@@ -30,9 +31,9 @@ def _generate(results, progress, settings):
 
 def _post_process(results):
     res = {}
-    for i in range(len(instruments_list.available)):
+    for i in range(len(instruments_list)):
         if results[i]:
-            res.update({instruments_list.available[i].name: results[i]})
+            res.update({instruments_list[i].name: results[i]})
     return res
 
 

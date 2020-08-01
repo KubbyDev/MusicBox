@@ -1,9 +1,10 @@
 import mido
 import threading
 
-from Server import tools as programtools, jobmanager, config
-from Server.Notes.Tools import tools, translation
-from Server.Instruments import instruments_list
+from Server import config
+from Server.Processes.Tools import tools, translation, postprocess
+from Server.Processes import instruments_list
+from Server.Processes.JobManager import jobmanager
 
 
 def get_tempo(midifile):
@@ -48,7 +49,7 @@ def _to_notes(miditrack, results, index, tpb, tempo):
             if n[1] > length: length = n[1] # Latest end
             if n[2] > highest: highest = n[2] # Highest pitch
             if n[2] < lowest: lowest = n[2] # Lowest pitch
-            notes.append(note.Note(n[0], n[1], n[2]))
+            notes.append({'start':n[0], 'end':n[1], 'pitch':n[2]})
         # Saves the results
         results[index].append({
             'name': miditrack.name + str(i),
@@ -59,7 +60,7 @@ def _to_notes(miditrack, results, index, tpb, tempo):
         })
 
 
-# Converts all the tracks in the musicfile in ServerStorage
+# Converts all the tracks in the musicfile in Storage
 def _convert(results, progress, file):
     # Starts a thread for the conversion of each track
     threads = []
@@ -76,11 +77,11 @@ def _convert(results, progress, file):
     # Starts the threads when the results list is fully formed to avoid race condition
     for t in threads: t.start()
     # Waits for the threads to terminate
-    programtools.wait_for_threads(threads)
+    tools.wait_for_threads(threads)
 
 
 # Starts the conversion of all the tracks in the
-# musicfile in ServerStorage (asynchronously)
+# musicfile in Storage (asynchronously)
 def start_musicfile_conversion():
     try:
         file = mido.MidiFile(config.Storage.cache_folder + 'musicfile')
@@ -89,7 +90,7 @@ def start_musicfile_conversion():
             args=file,
             name='notes',
             progress=None,
-            postprocess=tools.post_process,
+            postprocess=postprocess.notes,
             done=instruments_list.start_instruments_computation
         )
     except Exception as e:

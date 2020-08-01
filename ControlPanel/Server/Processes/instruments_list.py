@@ -1,10 +1,7 @@
 import threading
-from Server.Instruments.Instruments.stepper import Stepper
-from Server import tools, jobmanager
-
-
-# List of available instruments
-available = [Stepper(index=1), Stepper(index=2), Stepper(index=3)]
+from Server.Processes.Tools import tools
+from Server.Processes.JobManager import jobmanager
+from Server.Instruments.instrument import instruments_list
 
 
 # Computes the requirements for all the tracks for this instrument
@@ -22,13 +19,12 @@ def _instruments_computation(results, progress, args):
     tracks = jobmanager.get_results('notes')['tracks']
     threads = []
     # Starts one thread for each instrument
-    for i in range(len(available)):
+    for i in range(len(instruments_list)):
         results.append([])
         thread = threading.Thread(target=_compute_instrument, args=(
-            results,
-            i,
-            available[i],
-            tracks
+            results, i,
+            instruments_list[i],
+            tracks,
         ))
         threads.append(thread)
     # Starts the threads when the results list is fully formed to avoid race condition

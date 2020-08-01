@@ -1,9 +1,7 @@
 import threading
-from Server import jobmanager, tools as programtools
-from Server.Notes.Tools import tools
-from Server.Notes.Tools import preprocess
-from Server.Instruments import instruments_list
-
+from Server.Processes.Tools import preprocess, postprocess, tools
+from Server.Processes import instruments_list
+from Server.Processes.JobManager import jobmanager
 
 _job_functions = [
     preprocess.move_octaves, # ID 0: Move octaves
@@ -39,7 +37,7 @@ def _process(results, progress, args):
             threads.append(t)
             t.start()
         # Waits for the threads to terminate
-        programtools.wait_for_threads(threads)
+        tools.wait_for_threads(threads)
 
 
 # Starts a track processing
@@ -50,7 +48,7 @@ def start_processing(jobs):
             args=(jobmanager.get_results('notes'), jobs['jobs'], jobs['selectedTracks']),
             name='notes',
             progress=None,
-            postprocess=tools.post_process,
+            postprocess=postprocess.notes,
             done=instruments_list.start_instruments_computation
         )
     except Exception as e:
