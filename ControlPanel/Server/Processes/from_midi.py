@@ -2,7 +2,7 @@ import mido
 import threading
 
 from Server import config
-from Server.Processes.Tools import tools, translation, postprocess
+from Server.Processes.Tools import tools, translation, postprocess, progress as progress_functions
 from Server.Processes import instruments_list
 from Server.Processes.JobManager import jobmanager
 
@@ -25,16 +25,20 @@ def get_tempo(midifile):
 # will place in its spot a list of tracks. Each track is a dictionnary
 # containing information about the track and a list of note dictionnaries
 # with start milliseconds, end milliseconds and midi pitch
-def _to_notes(miditrack, results, index, tpb, tempo):
+def _to_notes(miditrack, results, progress, index, tpb, tempo):
     # Converts the midi events to a more usable list of event
     events = translation.preprocess(miditrack, tpb, tempo)
+    progress[index] += 1
     # Does some cleaning with overlapping notes
     translation.clean_overlapping(events)
+    progress[index] += 1
     # Converts the events list to a chunk list with notes in each chunk
     chunks = translation.to_chunks(events)
+    progress[index] += 1
     # Separates the chunk list into multiple tracks, one for the
     # main notes and the others for the harmonics
     root, harmonics = translation.separate_chords(chunks)
+    progress[index] += 96
     tracks = [root] + harmonics
     for i in range(len(tracks)):
         # Adds stops and combines some notes
@@ -58,6 +62,7 @@ def _to_notes(miditrack, results, index, tpb, tempo):
             'length': length,
             'notes': notes,
         })
+    progress[index] += 1
 
 
 # Converts all the tracks in the musicfile in Storage
@@ -66,14 +71,18 @@ def _convert(results, progress, file):
     threads = []
     for i in range(1, len(file.tracks)):
         results.append([])
+        progress.append(0)
         t = threading.Thread(target=_to_notes, args=(
             file.tracks[i],
             results,
+            progress,
             i-1,
             file.ticks_per_beat,
             get_tempo(file),
         ))
         threads.append(t)
+    # Progress is calculated with the sum of the progress of each track (0 to 100)
+    progress.append(len(threads)*100)
     # Starts the threads when the results list is fully formed to avoid race condition
     for t in threads: t.start()
     # Waits for the threads to terminate
@@ -89,7 +98,7 @@ def start_musicfile_conversion():
             main=_convert,
             args=file,
             name='notes',
-            progress=None,
+            progress=progress_functions.from_numbers_fixed_status('Converting from MIDI to notes'),
             postprocess=postprocess.notes,
             done=instruments_list.start_instruments_computation
         )

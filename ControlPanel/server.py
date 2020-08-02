@@ -79,11 +79,11 @@ def instruments_progress():
 
 # Generation and playing
 
-@app.route('/api/generate/<name>', methods=['POST'])
-def generate(name):
-    return generation.start(name, request.get_json(force=True))
+@app.route('/api/generate/<melody>', methods=['POST'])
+def generate(melody):
+    return generation.start(melody, request.get_json(force=True))
 
-@app.route('/api/code/<melody>/<instrument>') # TODO: Security
+@app.route('/api/code/<melody>/<instrument>')
 def get_code(melody, instrument):
     for inst in instruments_list:
         if inst.name == instrument:

@@ -33,13 +33,17 @@ export default function KTrackTools(props) {
         }));
         if(jobs.length === 0) return;
 
+        let selectedTracks = [];
+        for(let i = 0; i < props.selectedTracks.length; i++) {
+            if(props.selectedTracks[i][0])
+                selectedTracks.push(i);
+        }
+
         fetch('/api/process', {
             method: 'post',
             body: JSON.stringify({
                 jobs: jobs,
-                selectedTracks: props.selectedTracks
-                    .filter(trackSelection => trackSelection[0])
-                    .map((trackSelection, index) => index),
+                selectedTracks: selectedTracks,
             }),
         })
             .then(() => {

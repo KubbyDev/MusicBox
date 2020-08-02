@@ -3,6 +3,7 @@ import threading
 from Server import config, storage
 from Server.Processes.Tools import tools
 
+
 # Static values
 _default_progress_function = lambda pro: {'percent':50,'status':'In progress'}
 _progress_done = {'percent':100,'status':'Done'}

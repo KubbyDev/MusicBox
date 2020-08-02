@@ -1,15 +1,19 @@
 import React from 'react';
 import Button from "@material-ui/core/Button";
+import {useHistory} from "react-router";
 
 export default function KUploadPage(props) {
 
+    const history = useHistory();
     let file = null;
 
     const upload = () => {
         fetch('/api/musicfile', {
             method: 'post',
             body: file,
-        }).catch(console.error);
+        })
+            .then(() => history.push('/instrumentpicker'))
+            .catch(console.error);
     }
 
     return (
