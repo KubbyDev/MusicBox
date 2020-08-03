@@ -1,10 +1,8 @@
-Idee:
-Faire une sorte de violon avec un bras qui bouge grace au stepper. Le son est produit par le moteur, pas par le violon, mais le violon donne un visuel sympa.
-Meme idée mais avec un accordéon (plus proche du son des steppers + possibilité d'en mettre un de chaque coté)
+Visual idea:
+Portal turrets. The motor shaft could drive a mecanisme that makes the arms open and close
 
 Links:
 https://forum.phpoc.com/blogs/iot-lover/1331-arduino-making-music-using-step-motor
 https://www.instructables.com/id/Make-Music-With-Stepper-Motors/
 
-
-Apparament la colle chaude permet un excellent transfert des vibrations du moteur vers le support
+Use hot glue to transfer the vibrations to the resonance box
