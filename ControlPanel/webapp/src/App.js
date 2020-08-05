@@ -5,7 +5,7 @@ import {createMuiTheme} from "@material-ui/core";
 import {ThemeProvider} from "@material-ui/styles";
 import KUploadPage from "./Pages/Upload/KUploadPage";
 import KInstrumentsPageLoader from "./Pages/InstrumentsPicker/KInstrumentsPageLoader";
-import KMelodiesPage from "./Pages/Melodies/KMelodiesPage";
+import KMelodiesPageLoader from "./Pages/Melodies/KMelodiesPageLoader";
 
 const theme = createMuiTheme({
     palette: {
@@ -39,7 +39,7 @@ export default function App() {
                 <Route exact path='/' component={KHomePage}/>
                 <Route exact path='/instrumentpicker' component={KInstrumentsPageLoader}/>
                 <Route exact path='/upload' component={KUploadPage}/>
-                <Route exact path='/melodies' component={KMelodiesPage}/>
+                <Route exact path='/melodies' component={KMelodiesPageLoader}/>
             </Switch>
         </ThemeProvider>
     );

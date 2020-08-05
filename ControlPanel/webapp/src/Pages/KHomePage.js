@@ -16,7 +16,6 @@ export default function KHomePage() {
     ]
 
     const handleClick = (destination) => {
-        console.log(destination);
         history.push(destination);
     };
 

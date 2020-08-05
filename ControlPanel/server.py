@@ -5,7 +5,7 @@ from werkzeug import serving
 from Server.Processes import generation, processing, from_midi
 from Server.Processes.JobManager import jobmanager
 from Server.Instruments.available import instruments_list
-from Server import config
+from Server import config, storage
 
 # Initialisation --------------------------------------------------------------
 
@@ -45,7 +45,7 @@ def send_file(path):
 
 @app.route('/api/musicfile', methods=['POST'])
 def musicfile():
-    # Writes the music file to a temporary location in the server storage
+    # Writes the music file to the server cache
     try:
         file = open(config.Storage.cache_folder + 'musicfile', 'wb+')
         file.write(request.data)
@@ -59,7 +59,7 @@ def musicfile():
 def process():
     return processing.start_processing(request.get_json(force=True))
 
-# Getters
+# Notes and instruments
 
 @app.route('/api/notes')
 def notes():
@@ -67,7 +67,9 @@ def notes():
 
 @app.route('/api/notes/progress')
 def notes_progress():
-    return jsonify(jobmanager.get_progress('notes'))
+    res = jobmanager.get_progress('notes')
+    print(res)
+    return jsonify(res)
 
 @app.route('/api/instruments')
 def instruments():
@@ -77,11 +79,19 @@ def instruments():
 def instruments_progress():
     return jsonify(jobmanager.get_progress('instruments'))
 
-# Generation and playing
+# Melodies
 
 @app.route('/api/generate/<melody>', methods=['POST'])
 def generate(melody):
     return generation.start(melody, request.get_json(force=True))
+
+@app.route('/api/generation/progress')
+def generation_progress():
+    return jsonify(jobmanager.get_progress('generation'))
+
+@app.route('/api/melodies')
+def melodieslist():
+    return jsonify(os.listdir(config.Storage.melodies_folder))
 
 @app.route('/api/code/<melody>/<instrument>')
 def get_code(melody, instrument):

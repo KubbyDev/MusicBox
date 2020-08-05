@@ -50,10 +50,10 @@ def _to_notes(miditrack, results, progress, index, tpb, tempo):
         lowest = 10000
         length = 0
         for n in resultTrack:
-            if n[1] > length: length = n[1] # Latest end
-            if n[2] > highest: highest = n[2] # Highest pitch
-            if n[2] < lowest: lowest = n[2] # Lowest pitch
-            notes.append({'start':n[0], 'end':n[1], 'pitch':n[2]})
+            if n[1] > length: length = n[1]  # Latest end
+            if n[2] > highest: highest = n[2]  # Highest pitch
+            if n[2] < lowest: lowest = n[2]  # Lowest pitch
+            notes.append({'start': n[0], 'end': n[1], 'pitch': n[2]})
         # Saves the results
         results[index].append({
             'name': miditrack.name + str(i),

@@ -53,7 +53,7 @@ def start(melodyName, settings):
         jobmanager.launch_job(
             main=_generate,
             args=settings,
-            name='generated',
+            name='generation',
             progress=progress_functions.from_boolean_fixed_status('Generating instrument code'),
             postprocess=_post_process_function(melodyName)
         )

@@ -5,8 +5,7 @@ def from_numbers_fixed_status(status):
     def function(progress):
         percent, total = 0, progress[-1]
         for val in progress[:-1]: percent += val
-        if percent == total: percent = 100
-        else: percent = round(percent * 1000 / total) / 10
+        percent = round(percent * 1000 / total) / 10
         return {'percent': percent, 'status': status}
     return function
 
@@ -17,7 +16,6 @@ def from_boolean_fixed_status(status):
         percent, total = 0, len(progress)
         for val in progress:
             if val: percent += 1
-        if percent == total: percent = 100
-        else: percent = round(percent * 1000 / total) / 10
+        percent = round(percent * 1000 / total) / 10
         return {'percent': percent, 'status': status}
     return function

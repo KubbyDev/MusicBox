@@ -89,7 +89,7 @@ export default function KInstrumentsPage(props) {
         }
 
         fetch('/api/generate/Melody', {method: 'post', body: JSON.stringify(body)})
-            .then(history.push('/melodies'))
+            .then(history.push({pathname: '/melodies', state: false}))
             .catch(console.error);
     };
 

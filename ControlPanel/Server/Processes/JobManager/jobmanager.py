@@ -5,8 +5,8 @@ from Server.Processes.Tools import tools
 
 
 # Static values
-_default_progress_function = lambda pro: {'percent':50,'status':'In progress'}
-_progress_done = {'percent':100,'status':'Done'}
+_default_progress_function = lambda pro: {'percent': 50, 'status': 'In progress'}
+_progress_done = {'percent': 100, 'status': 'Done'}
 
 # Is a job currently running ?
 _working = False
@@ -79,12 +79,17 @@ def launch_job(main,
 # Returns the return value of the progress function or its last return value
 def get_progress(job_name='Job'):
     # If the queried job is currently running, calls the function directly
-    if _working and _job_name == job_name: return _progress_function(_progress)
+    if _working and _job_name == job_name:
+        progress = _progress_function(_progress)
+        progress['done'] = False
+        return progress
     # If it is another job, returns the last progress of the queried job if available
     res = storage.read(config.Storage.cache_folder + job_name + '-Progress')
-    if res: return res
     # If it is not available, throws an error
-    else: raise Exception('Unknown job')
+    if res is None: raise Exception('Unknown job')
+    # If it is available and done, returns it
+    res['done'] = True
+    return res
 
 
 # Returns the current value of the results array

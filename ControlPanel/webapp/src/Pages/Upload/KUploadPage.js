@@ -12,7 +12,7 @@ export default function KUploadPage(props) {
             method: 'post',
             body: file,
         })
-            .then(() => history.push('/instrumentpicker'))
+            .then(() => history.push({pathname: '/instrumentpicker', state: false}))
             .catch(console.error);
     }
 
