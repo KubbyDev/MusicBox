@@ -5,6 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import { playMelody, stopMelody } from "../../MelodyPlayer";
 import KTrackTools from "./KTrackTools";
 import {useHistory} from "react-router";
+import KInputModal from "../../Components/KInputModal";
 
 export default function KInstrumentsPage(props) {
 
@@ -12,6 +13,7 @@ export default function KInstrumentsPage(props) {
     const history = useHistory();
     const [playingMelodyB, setPlayingMelodyB] = React.useState(false);
     const [playingMelodyM, setPlayingMelodyM] = React.useState(false);
+    const [showMelodyNamePopup, setShowMelodyNamePopup] = React.useState(false);
 
     // Filters the errors and warnings for a particular track
     const instrumentsForTrack = (track) => {
@@ -68,7 +70,8 @@ export default function KInstrumentsPage(props) {
         setPlayingMelodyM( ! playingMelodyM);
     };
 
-    const handleGenerate = () => {
+    const handleGenerate = () => setShowMelodyNamePopup(true);
+    const generateMelody = (name) => {
 
         let body = {};
         // For each instrument
@@ -88,7 +91,7 @@ export default function KInstrumentsPage(props) {
                 body[instrument.name] = trackId;
         }
 
-        fetch('/api/generate/Melody', {method: 'post', body: JSON.stringify(body)})
+        fetch('/api/generate/'+name, {method: 'post', body: JSON.stringify(body)})
             .then(history.push({pathname: '/melodies', state: false}))
             .catch(console.error);
     };
@@ -178,6 +181,16 @@ export default function KInstrumentsPage(props) {
                     </Grid>
                 )}
             </Grid>
+            {/* Melody name popup ---------------------------------------------------------------------------------- */}
+            <KInputModal
+                show={showMelodyNamePopup}
+                setShow={setShowMelodyNamePopup}
+                title={'Melody name'}
+                placeholder={'Melody'}
+                alphanumeric
+                doneTitle={'Generate'}
+                onDone={generateMelody}
+            />
         </>
     );
 }

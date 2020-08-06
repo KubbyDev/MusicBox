@@ -67,9 +67,7 @@ def notes():
 
 @app.route('/api/notes/progress')
 def notes_progress():
-    res = jobmanager.get_progress('notes')
-    print(res)
-    return jsonify(res)
+    return jsonify(jobmanager.get_progress('notes'))
 
 @app.route('/api/instruments')
 def instruments():

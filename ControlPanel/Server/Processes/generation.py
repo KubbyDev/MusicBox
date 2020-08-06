@@ -22,7 +22,6 @@ def _generate(results, progress, settings):
         # If the instrument hasn't been selected, does nothing
         if instrument.name in settings.keys():
             progress.append(False)
-            index += 1
             thread = threading.Thread(target=_generate_for_instrument, args=(
                 results, i,
                 progress, index,
@@ -30,6 +29,7 @@ def _generate(results, progress, settings):
                 tracks[settings[instrument.name]],
             ))
             threads.append(thread)
+            index += 1
     # Starts the threads when the results list is fully formed to avoid race condition
     for t in threads: t.start()
     # Waits for all the threads to terminate
