@@ -10,5 +10,3 @@ class Drum(Instrument):
         pass
     def upload(self):
         pass
-    def get_code(self, melody):
-        pass

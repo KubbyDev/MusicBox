@@ -96,7 +96,8 @@ def get_code(melody, instrument):
     for inst in instruments_list:
         if inst.name == instrument:
             res = inst.get_code(melody)
-            if not isinstance(res, tuple): return jsonify(res)
+            if not isinstance(res, tuple):
+                return res
             else: return jsonify(res[0]), res[1]
     return jsonify("Instrument " + instrument + " not found"), 500
 

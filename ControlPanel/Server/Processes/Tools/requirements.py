@@ -10,7 +10,7 @@ class Requirements:
     # Builds the requirements list in the right format for the instruments request
     # (Adds these requirements to an already existing dictionnary if provided)
     def build_for_instruments(self, current=None):
-        res = current if current else {'warnings':[], 'errors':[]}
+        res = current if current else {'warnings': [], 'errors': []}
         for reqType in ['warnings', 'errors']:
             for req in self.__getattribute__(reqType):
                 res[reqType].append(req)
@@ -24,16 +24,21 @@ class Requirements:
                 error['id'] = checkID
             for w in warnings: self.warnings.append(w)
             for e in errors: self.errors.append(e)
+    def fix(self):
+        for req in (self.warnings + self.errors):
+            id = req['id']
+            if id == NOTES_RANGE:
+                remove_outofrange(self.track, req['args']['min'], req['args']['max'])
     def empty(self):
         return len(self.warnings) == len(self.errors) == 0
 
 
 # Checkers --------------------------------------------------------------------
-# Checkers are functions that take a track (full dictionnary) and return
-# a list of errors and a list of warnings in a tuple (both can be empty)
+# Checkers are functions that take a track (full dictionnary) and return an id,
+# a list of errors and a list of warnings in a tuple (both lists can be empty)
 
 
-NOTES_RANGE_CHECK = 1
+NOTES_RANGE = 0
 def notes_range(minNote, maxNote):
     # Checks if the notes are in the range of the instrument. If not, tries to move the notes
     # by some amount of octaves and returns a warning. If it is not possible, returns an error
@@ -48,13 +53,34 @@ def notes_range(minNote, maxNote):
         if trMin < minNote:
             movement = math.ceil((minNote - trMin)/12)
             if trMax + 12*movement > maxNote:
-                return NOTES_RANGE_CHECK, [], [err]
-            return NOTES_RANGE_CHECK, [warn], []
+                return NOTES_RANGE, [], [err]
+            return NOTES_RANGE, [warn], []
         elif trMax > maxNote:
             movement = math.ceil((trMax - maxNote)/12)
             if trMin - 12*movement < minNote:
-                return NOTES_RANGE_CHECK, [], [err]
-            return NOTES_RANGE_CHECK, [warn], []
+                return NOTES_RANGE, [], [err]
+            return NOTES_RANGE, [warn], []
         else:
-            return NOTES_RANGE_CHECK, [], []
+            return NOTES_RANGE, [], []
     return check_notes_range
+
+
+# Fixers ----------------------------------------------------------------------
+# Fixers are functions that take a track (full dictionnary)
+# and modify it to satisfy a given requirement
+
+
+# Removes all the notes that are not in the given range
+def remove_outofrange(track, minPitch, maxPitch):
+    resNotes = []
+    resMin = 100000
+    resMax = 0
+    for note in track['notes']:
+        pitch = note['pitch']
+        if minPitch <= pitch <= maxPitch:
+            resNotes.append(note)
+            resMin = min(resMin, note['pitch'])
+            resMax = max(resMax, note['pitch'])
+    track['notes'] = resNotes
+    track['lowest'] = resMin
+    track['highest'] = resMax

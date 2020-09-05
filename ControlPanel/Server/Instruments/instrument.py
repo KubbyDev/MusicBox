@@ -1,3 +1,5 @@
+from Server import storage, config
+
 
 class Instrument:
     def __init__(self, name=None, index=None):
@@ -32,4 +34,10 @@ class Instrument:
 
         :param melody: The name of the desired melody
         """
-        raise NotImplementedError()
+        data = storage.read(config.Storage.melodies_folder + melody)
+        if data is None: return 'Could not find melody ' + melody, 500
+        generated = data.get(self.name)
+        return "const PROGMEM uint16_t notes{}[] = {{\n    {}\n}};\n" \
+                   .format(self.name, ', '.join(map(lambda x: str(x), generated['notes']))) \
+               + "const PROGMEM uint32_t times{}[] = {{\n    {}\n}};\n" \
+                   .format(self.name, ', '.join(map(lambda x: str(x), generated['times'])))

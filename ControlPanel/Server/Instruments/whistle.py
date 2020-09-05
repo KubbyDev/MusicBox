@@ -8,5 +8,3 @@ class Whistle(Instrument):
         pass
     def upload(self):
         pass
-    def get_code(self, melody):
-        pass
