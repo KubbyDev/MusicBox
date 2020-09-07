@@ -52,4 +52,4 @@ Refs:
 CESFONJER 650nm 5mW: https://www.amazon.fr/WPERSUVV-Laser-diode-T%C3%AAte-Rouge/dp/B07RM3RWSF
 
 Voltage: 5V
-Current: 50mA (should be determined experimentally)
+Current (my measures, 5V): 33mA (0.4A for all 12 lasers)

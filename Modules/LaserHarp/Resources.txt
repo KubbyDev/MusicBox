@@ -1,2 +1,7 @@
 Similar projects:
 https://www.youtube.com/watch?v=pddGR5Eyc0Q
+
+
+Problem: thermal runaway
+https://www.ledsmagazine.com/leds-ssl-design/driver-ics/article/16696028/led-design-forum-avoiding-thermal-runaway-when-driving-multiple-led-strings-magazine
+I should design a pcb to solve this for the final version of the laser harp
