@@ -1,0 +1,33 @@
+Music Box:
+- Steppers
+    Designer la oscillator board
+    Faire des recherches/tests pour la caisse de raisonnance
+    Visuel: Tourelles de portal
+- Slide Whistle
+    Ajouter blades + ameliorer efficacité + accroche décrochable pour le moteur
+    Trouver un stepper rapide (5 tours/sec minimum) + designer une accroche
+    Test complet
+- Drum
+    Recherches sur la représentation des drums dans les fichiers midi
+    Faire un code de generation basique (sans simultanéité)
+    Trouver ou acheter un truc qui marche bien comme tambour
+    Acheter une cymbale
+- Laser harp
+	Etudier le besoin et faire la carte de control des lasers si besoin (thermal runaway + découplage)
+    Finir la V1
+    Recherches/Tests sur le systeme de fumée
+	Faire le design mecanique
+- Tesla coil
+    Recherches
+- Power Supply
+    Designer la carte de distribution depuis 24V
+- Software
+    Organiser les instruments avec la subclass
+    Mettre des comments ou utiliser des classes pour les structures de données 
+    Liste des melodies
+    Ameliorer le design de la webapp
+    Control des instruments par le serveur
+    Serveur de calcul
+    Flash Arduino depuis raspi avec un dossier de code
+    Append un 0 a la fin des melodies
+	Reflechir a une solution pour que les microcontrollers des instruments recuperent les melodies
